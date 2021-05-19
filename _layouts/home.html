@@ -1,0 +1,25 @@
+{% include header.html %}
+
+{% assign item = page.projects[0] %}
+
+<section class="project">
+    <figure>
+        <img src="{{ item.video }}" alt="RAPTURE">
+    </figure>
+    <div class="narrow">
+        {% include progressCircle.html  %}
+        <fieldset>
+            <legend>Project switcher</legend>
+        </fieldset>
+        <article>
+            <h2>{{ item.title }}</h2>
+            <span class="btn" data-collapsed=0 onclick="collapseArticle(this)"></span>
+            <div class="content">
+                {{ item.markdown | markdownify }}
+            </div>
+        </article>
+    </div>
+</section>
+
+{% include footer.html %}
+

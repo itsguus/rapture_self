@@ -1,30 +1,129 @@
 * {padding: 0; margin: 0;  border: 0;}
 html {font-size: 20px; scroll-behavior: smooth;}
-body {font-size: 1rem; color: #1d1a1c; line-height: 1.4; font-family: "Century Gothic"; font-weight: normal;}
-a {text-decoration: none; color: #1d1a1c;}
+body {font-size: 1rem; color: #1d1a1c; line-height: 1.4; font-family: "Geomanist"; font-weight: normal;}
+a {text-decoration: none; color: #1d1a1c}
 ul, ol {list-style-type: none;}
 p {margin-bottom: 1.4em;}
-br {margin:0 !important;}
+br {margin:0 !important; color: #F20587; color: #05DBF2}
+legend { display: none;}
 
 
 /* HEADERS */
 h1,h2,h3,h4 {font-weight: bold; margin-bottom: 0.25rem}
-h1 { font-size: 4vw;}
-h2 {font-size: 3.5vw;}
-h3 {font-size: 1.2rem;}
-h4 {font-size: 1.2rem;} 
+h1, .h1 { font-size: 2rem;  font-weight: 500;}
 
-@media only screen and (min-width: 1000px) {
-    h1 {font-size: 2rem;}
-    h2 {font-size: 1.65rem;}
+/* NAV */
+header > nav {position: absolute; z-index: 3; width: calc(100% - 2rem); height: calc(100% - 4rem); margin: auto; left: 0; right: 0; top: 0; bottom: 0; max-width: 90rem; pointer-events: none;}
+header > nav a {color: #b0b0a1; font-size: 0.8rem; font-weight: 500; pointer-events: all;}
+header > nav a:hover {animation: colorWheel 2s ease infinite;}
+header > nav > ul > li {position: absolute;}
+header > nav > ul > li:first-of-type {text-transform: uppercase; top: 0; left: 0;}
+
+header > nav > ul > li.nav { height: 0; display: flex; align-items: center; top: 0; bottom: 0; margin: auto 0;}
+header > nav > ul > li.nav > ul {display: flex; width: 30rem; transform: rotate(90deg) translateX(-50%); justify-content: center;  transform-origin: top left; margin-left: 0.9rem; ; position: absolute;}
+header > nav > ul > li.nav > ul > li > a {padding: 0.5rem;}
+header > nav > ul > li.nav > ul > li:nth-of-type(1) {transform: scale(-1) translateY(0.2rem); margin-left: 4rem;}
+header > nav > ul > li.nav.right { left: auto; right: 0; transform-origin: bottom right; transform: rotate(180deg);}
+header > nav > ul > li.nav.right >  ul {transform: rotate(270deg) translateX(-54.3%); margin-left: -0.2rem;}
+header > nav > ul > li.nav.right >  ul > li:nth-of-type(2) {transform: translateY(-0.1rem);}
+
+header > nav > ul > li:nth-of-type(4) {bottom: 0; right: 0;}
+header > nav > ul > li:nth-of-type(4) a {color: #FFF;}
+
+@keyframes colorWheel {
+    0% { color: #FFF}
+    33% { color: #05DBF2}
+    66% { color: #F20587}
+    100% { color: #FFF}
 }
 
-@media only screen and (min-width: 1300px) {
-    h1 {font-size: 3vw;}
-    h2 {font-size: 2.5vw;}
-} 
+/* LOADING SCREEN */
+.rap {position: relative; color: #F20587; z-index: 3; animation: wobbleBack 1s ease-in-out infinite alternate; }
+.rap::before, 
+.rap::after {content: "Rapture"; display: block; position: absolute; animation: correction 1s ease-in-out infinite alternate; top: 0;}
+.rap::before { z-index: -1; color: #05DBF2; animation: wobble 1s ease-in-out infinite alternate; }
+.rap::after { z-index: 1;  color: #1d1a1c; }
+.white.rap::after {color: #FFF; }
 
-@media only screen and (min-width: 2000px) {
-    h1 {font-size: 3rem;}
-    h2 {font-size: 2.4rem;}
+div.loading { height: 100%; width: 100%;  position: absolute; z-index: 99;  overflow: hidden}
+div.loading::before {content: ""; display: block; height: 100%; width: 100%; background: #000; position: absolute; transition: 500ms ease; transition-delay: 1500ms;}
+div.loading .box { display: flex; flex-direction: column; align-items: flex-end; ; max-width: 90rem; margin:0 auto; position: relative;}
+
+div.loading h1,
+div.loading .h1 {font-size: 10vw;  position: absolute;  right: -1rem; top: 0;}
+
+div.loading h1 { margin-top: 9vw; transition: 500ms ease; transition-delay: 1500ms}
+
+div.loading .h1:nth-of-type(1) {margin-top: 0;}
+div.loading .h1:nth-of-type(3) {margin-top: 18vw;}
+
+div.loading .rapbox { position: absolute; margin-top: 9vw; transition: 1000ms ease; transition-delay: 1500ms; top: 0; right: 0;}
+div.loading .rapbox h1 {position: relative; margin-top: 0;}
+
+div.loading.loaded {pointer-events: none;}
+div.loading.loaded::before {opacity: 0; }
+div.loading.loaded .h1  {animation: join 1s ease forwards; }
+div.loading.loaded .rapbox {top: 0.3rem; right: 0.8rem; transform: rotate(-90deg); transform-origin: right ; margin-top: 0;}
+div.loading.loaded .rapbox h1 {animation: smaller 2s ease-in forwards;}
+div.loading.loaded .rapbox h1.forward { animation: none;}
+
+@keyframes wobble {
+    0% { transform: translate(0%, -4%);}
+    100% { transform: translate(0%, 4%);}
 }
+
+@keyframes wobbleBack {
+    0% { transform: translate(0%, 02%);}
+    100% { transform: translate(0%, -02%);}
+}
+
+@keyframes correction {
+    0% { transform: translate(0%, -02%);}
+    100% { transform: translate(0%, 02%);}
+}
+
+@keyframes smaller {
+    0% { font-size: 10vw;}
+    50% { font-size: 10vw;}
+    100% { font-size: 3.5rem; }
+}
+
+
+@keyframes join {
+    0% {}
+    99% {margin-top: 9vw; opacity: 1;}
+    100% {margin-top: 9vw; opacity: 0; visibility: hidden;}
+}
+
+/* GENERAL */
+
+
+section.project {height: 100vh; display: flex; align-items: flex-end; justify-content: center;}
+section.project figure { width: 100%; height: 100%; position: absolute; top: 0; left: 0;}
+section.project figure img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.project .narrow { z-index: 1; margin: 2rem auto; display: flex; justify-content: space-between; max-width: 55rem; width: calc(100% - 2rem); height: calc(100% - 2rem); align-items: flex-end;}
+section.project .narrow article {max-width: 12rem; position: relative;}
+section.project .narrow article > h2 {text-transform: lowercase; color:#F20587; font-size: 2.5rem; line-height: 1.2}
+section.project .narrow article > * {color: #b0b0a1; font-weight: 500; font-size: 0.65rem}
+section.project .narrow article > *:last-child {border-bottom: 1px solid #b0b0a1;}
+
+section.project .narrow article span { display: block; position: absolute; height: 1rem; width: 2rem;  top: 0.9rem; right: 0.5rem; cursor: pointer; padding: 1rem;}
+section.project .narrow article span::before { content: ""; display: block; position: absolute; height: 0.1rem; width: 1rem; background: #F20587; top: 0.49rem; right: 0.5rem; transition: 500ms ease;}
+section.project .narrow article span::after { content: ""; display: block; position: absolute; height: 0.1rem; width: 1rem; background: #F20587; top: 0.49rem; right: 0.5rem; transition: 500ms ease;}
+section.project .narrow article span:hover::before, 
+section.project .narrow article span:hover::after { height: 0.3rem; top: 0.39rem}
+section.project .narrow article .content {transition: 500ms ease; height: auto; overflow: hidden;}
+
+section.project .narrow article.collapsed span:before { transform: rotate(270deg);}
+section.project .narrow article.collapsed span:after { transform: rotate(360deg);}
+
+section.project .narrow .progress  {position: absolute; bottom: 5rem;} 
+section.project .narrow .progress > div { border-radius: 50%; width: 148px; height: 148px; left: 1px; top: 1px; position: absolute;  overflow: hidden; z-index: 1;}
+section.project .narrow .progress > div span {display: block; background: linear-gradient(-90deg, rgba(0,0,0,1) 0%,  rgba(0,0,0,0) 100%); position: absolute; top: 0; left: 0; height: 100%; width: 190%; transform: translateX(150px)}
+section.project .narrow .progress.active > div {transform: rotate(90deg);}
+section.project .narrow .progress.active > div span {transform: translateX(calc(-100% + 150px));}
+
+section.project .narrow .progress svg { z-index: 1; position: relative;}
+section.project .narrow .progress svg circle { stroke-dasharray: 467; stroke-dashoffset: 467; }
+section.project .narrow .progress.active svg circle { stroke-dashoffset: 0; }
+section.project .narrow .progress.active {transform: rotate(-90deg);}
