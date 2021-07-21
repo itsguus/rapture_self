@@ -1,36 +1,50 @@
 <header>
-    <div class="loading" style='' onclick="removeLoadingScreen(this);">
+    <div class="loading">
         <div class="box">
             <div class="white h1 rap">Rapture</div>
             <div class="rapbox">
-                <h1 class="white rap">Rapture</h1>
+                <h1 class="white rap"  {% unless page.layout == "home" %}onclick="window.location.href='/'"{% endunless %}>Rapture</h1>
             </div>
             <div class="white h1 rap">Rapture</div>
         </div>
     </div>
-    
+
     <nav>
         <ul>
-            <li><a href="/portfolio">Full Portfolio</a></li>
+            {% if page.layout == 'home' %}<li><a class="fakehover" href="/full-portfolio/">Full Portfolio</a></li>
+            {% else %} <li>{% include breadcrumbs.html %}</li> {% endif %}
             <li class="nav left">
-                <ul>
-                    <li><a href="">NEXT PROJECT</a></li>
-                    <li><a href="">PREVIOUS PROJECT</a></li>
-                </ul>
+                <!-- <ul>
+                    <li><a class="fakehover" href="">NEXT PROJECT</a></li>
+                    <li><a class="fakehover" href="">PREVIOUS PROJECT</a></li>
+                </ul> -->
             </li>
             <li class="nav right">
-                <ul>
-                    <li><a href="">NEXT PROJECT</a></li>
-                    <li><a href="">PREVIOUS PROJECT</a></li>
-                </ul>
+                <!-- <ul>
+                    <li><a class="fakehover" href="">NEXT PROJECT</a></li>
+                    <li><a class="fakehover" href="">PREVIOUS PROJECT</a></li>
+                </ul> -->
             </li>
             <li>
                 <ul>
-                    <li><a href="">zep@rapture.nl</a></li>
-                    <li><a href="">+31612345678</a></li>
+                    <li><a class="fakehover" href="">zep@rapture.nl</a></li>
+                    <li><a class="fakehover" href="">+31612345678</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
+
+    <div id="fakemouse">
+        <div>
+            <div class="blue"></div>
+            <div class="red"></div>
+            <div class="white"></div>
+            <div class="bluebg"></div>
+            <div class="arrow1"></div>
+            <div class="arrow2"></div>
+            <div class="arrow3"></div>
+        </div>
+    </div>
+
 </header>
-<main> 
+<main>

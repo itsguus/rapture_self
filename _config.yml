@@ -1,11 +1,24 @@
-title: 
-description: 
+title: Rapture
+description: Awesome videos
 url: 
 
+tags: 
+  - promos
+  - regie
+  - camera
 
 defaults:
-  -
-    scope:
+  - scope:
       path: "" # an empty string here means all files in the project
     values:
       layout: "page"
+  - scope:
+      path: "_projects" 
+    values:
+      layout: "project"
+      permalink: /full-portfolio/:title/
+
+
+collections: 
+  projects:
+    output: true

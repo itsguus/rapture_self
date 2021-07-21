@@ -1,7 +1,26 @@
 </main>
-<footer>
+{% if page.layout != 'home' %}
+    <footer>
+        <ul>
+            <li><ul>
+                <li>All rights reserved</li>
+                <li>Rapture</li>
+                <li>KVK</li>
+            </ul></li>
+            <li><ul>
+                <li>Search it</li>
+                <li>Find it</li>
+                <li>Bank it</li>
+            </ul></li>
+            <li><ul>
+                <li class="fakehover"><a class="fakehover" href="mailto:zep@rapture.nl">zep@rapture.nl</a></li>
+                <li class="fakehover"><a class="fakehover" href="tel:0612345678">0612345678</a></li>
+                <li>Amsterdam</li>
+            </ul></li>
+        </ul>
+    </footer>
+{% endif %}
 
-</footer>
 <script type="text/javascript" src="/js/script.js"></script>
 </body>
 </html> 

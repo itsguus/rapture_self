@@ -1,0 +1,61 @@
+{% include header.html %}
+<div class="grad"></div>
+
+<section class="intro">
+    <figure>
+        <video src="{{ page.background_video_path }}" loop autoplay muted playsinline></video>
+    </figure>
+</section>
+
+<section class="grid">
+    <ul class="filters">
+        <li><input onchange="runFilter();" name="filter" data-for="promos" id="n1" type="checkbox"><label class="fakehover" for="n1">Promo's</label></li>
+        <li><input onchange="runFilter();" name="filter" data-for="regie" id="n2" type="checkbox"><label class="fakehover" for="n2">Regie</label></li>
+        <li><input onchange="runFilter();" name="filter" data-for="camera" id="n3" type="checkbox"><label class="fakehover" for="n3">Camera</label></li>
+    </ul>
+    <ul class="grid">
+        {% for item in site.projects %}
+            <li class="active {% for tag in item.tags %}{{ tag }} {% endfor %}"><a class="fakehover" href="{{ item.slug }}/">
+                <img src="{{ item.image }}" alt="{{ item.title }} RAPTURE">
+                <span>{{ item.title }}</span>
+            </a></li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="logos">
+    <div class="overflower">
+        {% assign numRows = 2 %}
+        {% assign logos = site.data.logos %}
+        {% assign firstRow = logos.size | divided_by: 2.0 | ceil  %}
+        {% assign secondRow = logos.size | minus: firstRow %}
+        {% for i in (1..numRows) %}
+        <div class="row">
+            <div class="reverse">
+                {% for j in (0..2) %}
+                    <ul>
+                        {% if j == 0 %}
+                            {% assign limit = firstRow %} 
+                            {% assign offset = 0 %} 
+                        {% else %}
+                            {% assign limit = secondRow %} 
+                            {% assign offset = firstRow %} 
+                        {% endif %}
+                        {% for item in logos limit: limit offset: offset %}
+                            <li class="img">
+                                <img class="white" src="{{ item.image }}" alt="{{ item.title }} logo">
+                                <img class="pink" src="{{ item.image }}" alt="{{ item.title }} logo">
+                                <img class="blue" src="{{ item.image }}" alt="{{ item.title }} logo">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        {{ firstRow  }}
+        {{ secondRow  }}
+    </div>
+</section>
+
+{% include footer.html %}

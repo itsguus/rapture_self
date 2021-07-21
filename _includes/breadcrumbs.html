@@ -1,0 +1,14 @@
+<div id="breadcrumbs">
+        {% assign crumbs = page.url | remove:'/index.html' | split: '/' %}
+        <a class="fakehover" href="/{{page.language}}">Home</a>
+        {% for crumb in crumbs offset: 1 %}
+          {% if forloop.last %}
+            <span class="lastitem">- {{ page.title }}</span>
+          {% else %}
+          {% if forloop.first %}
+            {% continue %}
+          {% else %}
+            <span>-</span> <a class="fakehover" href="{% assign crumb_limit = forloop.index | plus: 1 %}{% for crumb in crumbs limit: crumb_limit %}{{ crumb | append: '-' }}{% endfor %}">{{ crumb | replace:'-',' ' | remove:'.html' | capitalize }}</a>
+          {% endif %}{% endif %}
+        {% endfor %}
+</div>

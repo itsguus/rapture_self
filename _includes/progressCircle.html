@@ -1,6 +1,9 @@
-<div class="progress an">
-    <div class="gradient an"><span class="an"></span></div>
-    <svg width="150" height="150" xmlns="http://www.w3.org/2000/svg" onclick='playVideo()'>
-        <circle cx="75" cy="75" r="74" fill="none" stroke="#F20587" stroke-width="1" class="an"></circle>
-    </svg>
+<div class="progressbox">
+    <input type="radio" name="projects" data-pos={{ include.pos }} data-for="{{ include.title }}" data-time="" onclick="setProject(this)" class="fakehover">
+    <div class="progress an white {{ include.title }}">
+        <div class="gradient an"><span class="an"></span></div>
+        <svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="75" cy="75" r="74" fill="none" stroke="#F20587" stroke-width="2" class="an"></circle>
+        </svg>
+    </div>
 </div>

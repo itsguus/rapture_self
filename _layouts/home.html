@@ -1,25 +1,52 @@
 {% include header.html %}
 
-{% assign item = page.projects[0] %}
-
 <section class="project">
     <figure>
-        <img src="{{ item.video }}" alt="RAPTURE">
+        <div class="slider" data-pos=0>
+            {% for selection in page.front_page_projects %}
+                {% for item in site.projects %}
+                    {% if item.slug == selection %}
+                    <div class="img">
+                        <video class="arrow--possible" loop muted playsinline src="{{ item.video_path }}"></video>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
     </figure>
-    <div class="narrow">
-        {% include progressCircle.html  %}
+    <div class="narrow arrow--possible">
         <fieldset>
-            <legend>Project switcher</legend>
+            <legend>Projects</legend>
+            {% for selection in page.front_page_projects %}
+            {% assign index = forloop.index0 %}
+                {% for item in site.projects %}
+                    {% if item.slug == selection %}
+                        {% assign class = item.title | slugify %}
+                        {% include progressCircle.html title=class pos=index %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
         </fieldset>
-        <article>
-            <h2>{{ item.title }}</h2>
-            <span class="btn" data-collapsed=0 onclick="collapseArticle(this)"></span>
-            <div class="content">
-                {{ item.markdown | markdownify }}
+        <div class="articles">
+            <div class="slider" data-pos=0>
+                {% for selection in page.front_page_projects %}
+                    {% for item in site.projects %}
+                        {% if item.slug == selection %}
+                        <article>
+                            <h2>{{ item.title }}</h2>
+                            <span class="btn fakehover" data-collapsed=0 onclick="collapseArticle(this)"></span>
+                            <div class="content">
+                                {{ item.content }}
+                            </div>
+                        </article>
+                        {% endif %}
+                    {% endfor %}    
+                {% endfor %}
             </div>
-        </article>
+        </div>
     </div>
 </section>
+
 
 {% include footer.html %}
 

@@ -1,7 +1,7 @@
 * {padding: 0; margin: 0;  border: 0;}
 html {font-size: 20px; scroll-behavior: smooth;}
-body {font-size: 1rem; color: #1d1a1c; line-height: 1.4; font-family: "Geomanist"; font-weight: normal;}
-a {text-decoration: none; color: #1d1a1c}
+body {font-size: 1rem; color: #1d1a1c; line-height: 1.4; font-family: "Geomanist"; font-weight: normal;  cursor: none;}
+a {text-decoration: none; color: #1d1a1c; cursor: none;}
 ul, ol {list-style-type: none;}
 p {margin-bottom: 1.4em;}
 br {margin:0 !important; color: #F20587; color: #05DBF2}
@@ -13,8 +13,8 @@ h1,h2,h3,h4 {font-weight: bold; margin-bottom: 0.25rem}
 h1, .h1 { font-size: 2rem;  font-weight: 500;}
 
 /* NAV */
-header > nav {position: absolute; z-index: 3; width: calc(100% - 2rem); height: calc(100% - 4rem); margin: auto; left: 0; right: 0; top: 0; bottom: 0; max-width: 90rem; pointer-events: none;}
-header > nav a {color: #b0b0a1; font-size: 0.8rem; font-weight: 500; pointer-events: all;}
+header > nav {position: absolute; z-index: 3; width: calc(100% - 4rem); height: calc(100% - 4rem); margin: auto; left: 0; right: 0; top: 0; bottom: 0; max-width: 90rem; pointer-events: none;}
+header > nav a, header > nav span {color: #b0b0a1; font-size: 0.8rem; font-weight: 500; pointer-events: all;}
 header > nav a:hover {animation: colorWheel 2s ease infinite;}
 header > nav > ul > li {position: absolute;}
 header > nav > ul > li:first-of-type {text-transform: uppercase; top: 0; left: 0;}
@@ -27,7 +27,7 @@ header > nav > ul > li.nav.right { left: auto; right: 0; transform-origin: botto
 header > nav > ul > li.nav.right >  ul {transform: rotate(270deg) translateX(-54.3%); margin-left: -0.2rem;}
 header > nav > ul > li.nav.right >  ul > li:nth-of-type(2) {transform: translateY(-0.1rem);}
 
-header > nav > ul > li:nth-of-type(4) {bottom: 0; right: 0;}
+header > nav > ul > li:nth-of-type(4) {bottom: 0; right: 0; transition: 1000ms ease;}
 header > nav > ul > li:nth-of-type(4) a {color: #FFF;}
 
 @keyframes colorWheel {
@@ -47,7 +47,7 @@ header > nav > ul > li:nth-of-type(4) a {color: #FFF;}
 
 div.loading { height: 100%; width: 100%;  position: absolute; z-index: 99;  overflow: hidden}
 div.loading::before {content: ""; display: block; height: 100%; width: 100%; background: #000; position: absolute; transition: 500ms ease; transition-delay: 1500ms;}
-div.loading .box { display: flex; flex-direction: column; align-items: flex-end; ; max-width: 90rem; margin:0 auto; position: relative;}
+div.loading .box { display: flex; flex-direction: column; align-items: flex-end; ; max-width: 95rem; margin:0 auto; position: relative;}
 
 div.loading h1,
 div.loading .h1 {font-size: 10vw;  position: absolute;  right: -1rem; top: 0;}
@@ -60,12 +60,12 @@ div.loading .h1:nth-of-type(3) {margin-top: 18vw;}
 div.loading .rapbox { position: absolute; margin-top: 9vw; transition: 1000ms ease; transition-delay: 1500ms; top: 0; right: 0;}
 div.loading .rapbox h1 {position: relative; margin-top: 0;}
 
-div.loading.loaded {pointer-events: none;}
-div.loading.loaded::before {opacity: 0; }
-div.loading.loaded .h1  {animation: join 1s ease forwards; }
-div.loading.loaded .rapbox {top: 0.3rem; right: 0.8rem; transform: rotate(-90deg); transform-origin: right ; margin-top: 0;}
-div.loading.loaded .rapbox h1 {animation: smaller 2s ease-in forwards;}
-div.loading.loaded .rapbox h1.forward { animation: none;}
+.loaded div.loading {pointer-events: none;}
+.loaded div.loading::before {opacity: 0; }
+.loaded div.loading .h1  {animation: join 1s ease forwards; }
+.loaded div.loading .rapbox {top: 0.3rem; right: 2.8rem; transform: rotate(-90deg); transform-origin: right ; margin-top: 0;}
+.loaded div.loading .rapbox h1 {animation: smaller 2s ease-in forwards;}
+.loaded div.loading .rapbox h1.forward { animation: none;}
 
 @keyframes wobble {
     0% { transform: translate(0%, -4%);}
@@ -78,7 +78,7 @@ div.loading.loaded .rapbox h1.forward { animation: none;}
 }
 
 @keyframes correction {
-    0% { transform: translate(0%, -02%);}
+    0% { transform: translate(0%, -2%);}
     100% { transform: translate(0%, 02%);}
 }
 
@@ -99,15 +99,14 @@ div.loading.loaded .rapbox h1.forward { animation: none;}
 
 
 section.project {height: 100vh; display: flex; align-items: flex-end; justify-content: center;}
-section.project figure { width: 100%; height: 100%; position: absolute; top: 0; left: 0;}
-section.project figure img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
-section.project .narrow { z-index: 1; margin: 2rem auto; display: flex; justify-content: space-between; max-width: 55rem; width: calc(100% - 2rem); height: calc(100% - 2rem); align-items: flex-end;}
-section.project .narrow article {max-width: 12rem; position: relative;}
+section.project figure { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: hidden;}
+section.project figure video {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: 1000ms ease;}
+section.project .narrow { z-index: 1; margin: 2rem auto; display: flex; justify-content: center; max-width: 55rem; width: calc(100% - 2rem); height: calc(100% - 2rem); align-items: flex-end;}
+section.project .narrow article {max-width: 12rem; position: relative; margin-left: auto; margin-right: 2rem;}
 section.project .narrow article > h2 {text-transform: lowercase; color:#F20587; font-size: 2.5rem; line-height: 1.2}
 section.project .narrow article > * {color: #b0b0a1; font-weight: 500; font-size: 0.65rem}
-section.project .narrow article > *:last-child {border-bottom: 1px solid #b0b0a1;}
 
-section.project .narrow article span { display: block; position: absolute; height: 1rem; width: 2rem;  top: 0.9rem; right: 0.5rem; cursor: pointer; padding: 1rem;}
+section.project .narrow article span { display: block; position: absolute; height: 1rem; width: 2rem;  top: 0.9rem; right: 0.5rem;  padding: 1rem;}
 section.project .narrow article span::before { content: ""; display: block; position: absolute; height: 0.1rem; width: 1rem; background: #F20587; top: 0.49rem; right: 0.5rem; transition: 500ms ease;}
 section.project .narrow article span::after { content: ""; display: block; position: absolute; height: 0.1rem; width: 1rem; background: #F20587; top: 0.49rem; right: 0.5rem; transition: 500ms ease;}
 section.project .narrow article span:hover::before, 
@@ -117,13 +116,183 @@ section.project .narrow article .content {transition: 500ms ease; height: auto; 
 section.project .narrow article.collapsed span:before { transform: rotate(270deg);}
 section.project .narrow article.collapsed span:after { transform: rotate(360deg);}
 
-section.project .narrow .progress  {position: absolute; bottom: 5rem;} 
+section.project .narrow fieldset { display: flex; margin: 0 auto;}
+
+section.project .narrow .progressbox  {position: relative; transform: scale(0.4); margin: 0 -0.5rem}
+section.project .narrow .progress {transition: 500ms ease;}›
 section.project .narrow .progress > div { border-radius: 50%; width: 148px; height: 148px; left: 1px; top: 1px; position: absolute;  overflow: hidden; z-index: 1;}
-section.project .narrow .progress > div span {display: block; background: linear-gradient(-90deg, rgba(0,0,0,1) 0%,  rgba(0,0,0,0) 100%); position: absolute; top: 0; left: 0; height: 100%; width: 190%; transform: translateX(150px)}
+section.project .narrow .progress > div span {display: block; background: linear-gradient(-90deg, rgba(0,0,0,1) 0%,  rgba(0,0,0,0) 100%); position: absolute; top: 0; left: 0; height: 100%; width: 190%; transform: translateX(30%)}
+section.project .narrow .progress > div {transform: rotate(-90deg);}
 section.project .narrow .progress.active > div {transform: rotate(90deg);}
 section.project .narrow .progress.active > div span {transform: translateX(calc(-100% + 150px));}
 
-section.project .narrow .progress svg { z-index: 1; position: relative;}
-section.project .narrow .progress svg circle { stroke-dasharray: 467; stroke-dashoffset: 467; }
+section.project .narrow .progress svg { z-index: 1; position: relative; transform: scale(1, -1)}
+section.project .narrow .progress svg circle { stroke-dasharray: 467; stroke-dashoffset: 467;  transition: 500ms ease;}
 section.project .narrow .progress.active svg circle { stroke-dashoffset: 0; }
-section.project .narrow .progress.active {transform: rotate(-90deg);}
+section.project .narrow .progress.active {transform: rotate(-90deg) scale(1.2);}
+
+section.project .narrow .progress.white svg circle { stroke: #FFF; stroke-dashoffset: 233.5; }
+section.project .narrow .progressbox input:hover + .progress.white:not(.active) svg circle { stroke: #05DBF2; }
+section.project .narrow .progress.white.active svg circle { stroke: #F20587; stroke-dashoffset: 0}
+section.project .narrow .progressbox input[type=radio] {position: absolute; width: 100%; height: 100%; left: 0; top: 0; z-index: 2; opacity: 0; }
+
+section.project .narrow .progressbox input:hover,
+section.project .narrow .progressbox input:hover + .progress:not(.active) {transform: scale(1.1);}
+
+
+body:not(.loaded) #fakemouse > div > * { height: 8rem; width: 8rem; }
+#fakemouse { position: fixed; top: -13px; left: -11px; height: 1rem; width: 1rem;z-index: 99; transition: 5ms; pointer-events: none; transform: translate3d(-100rem, 0, 0)}
+#fakemouse > div {transition: 250ms ease; border: 2px solid transparent; width: 1rem; height: 1rem; border-radius: 50%;}
+#fakemouse > div > * {  height: 1rem; width: 1rem;  border-radius: 50%; position: absolute; transition: 250ms ease; }
+#fakemouse  .blue {background: #05DBF2; animation: shrink 3s ease-in infinite;  z-index: 3;}
+#fakemouse  .red {background: #F20587; animation: shrink2 3s ease-in infinite;  z-index: 2;}
+#fakemouse  .white {background: #FFF; animation: shrink3 3s ease-in infinite;  z-index: 1;}
+#fakemouse  .bluebg {background: #05DBF2; z-index: 0;}
+
+#fakemouse.fakehover > div {transform:scale(1.2);  animation: colorWheelBorder 3s ease infinite;  }
+#fakemouse.fakehover > div > * {background: transparent; }
+#fakemouse.fakehover > div > .bluebg {background: #FFF; transform: scale(0.2)}
+.fakehover { cursor: none; }
+
+@keyframes shrink {
+    0% { transform: scale(1);}
+    33% { transform: scale(0);}
+    100% { transform: scale(0);}
+}
+@keyframes shrink2 {
+    0% { transform: scale(1);}
+    33% { transform: scale(1);}
+    66% { transform: scale(0);}
+    100% { transform: scale(0);}
+}
+@keyframes shrink3 {
+    0% { transform: scale(1);}
+    66% { transform: scale(1);}
+    100% { transform: scale(0);}
+}
+
+@keyframes colorWheelBorder {
+    0% {  border: 2px solid #FFF}
+    33% {  border: 2px solid #05DBF2}
+    66% {  border: 2px solid #F20587}
+    100% {  border: 2px solid #FFF}
+}
+
+@keyframes colorWheelBackground {
+    0% {  background: #FFF}
+    33% {  background: #05DBF2}
+    66% {  background: #F20587}
+    100% {  background: #FFF}
+}
+
+
+/* FAKE MOUSE */
+/* #fakemouse { display: none; }
+body, 
+a, .fakehover { cursor: initial}  */
+
+
+@media only screen and (max-width: 1500px) {
+    header > nav > ul > li:nth-of-type(4) { bottom: calc(100% - 2.6rem); right: 3.5rem}
+}
+
+
+/* #fakemouse { transform: translate3d(20rem, 25rem, 0) scale(10)} */
+
+#fakemouse.right:not(.fakehover) > div {transform: translateY(0.25rem) scale(1.5); height: 0;}
+#fakemouse.right:not(.fakehover) > div > * {height: 0; border-radius: 0.5rem; animation: colorWheelBackground 3s ease infinite;}
+#fakemouse.right:not(.fakehover) > div > div.arrow1 { border-radius: 0.5rem;  height: 0.25rem; transform-origin: right center;} 
+#fakemouse.right:not(.fakehover) > div > div.arrow2 {transform: translate(0.4rem, 0.16rem) rotate(-45deg); width: 0.7rem; height: 0.25rem;}
+#fakemouse.right:not(.fakehover) > div > div.arrow3 {transform: translate(0.4rem, -0.16rem) rotate(45deg); width: 0.7rem; height: 0.25rem;}
+
+#fakemouse.left:not(.fakehover) > div {transform: translateY(0.5rem) scale(1.5); height: 0;}
+#fakemouse.left:not(.fakehover) > div > * {height: 0; border-radius: 0.5rem; animation: colorWheelBackground 3s ease infinite;}
+#fakemouse.left:not(.fakehover) > div > div.arrow1 { border-radius: 0.5rem;  height: 0.25rem; transform-origin: left center;} 
+#fakemouse.left:not(.fakehover) > div > div.arrow2 {transform: translate(-0.1rem, 0.16rem) rotate(45deg); width: 0.7rem; height: 0.25rem;}
+#fakemouse.left:not(.fakehover) > div > div.arrow3 {transform: translate(-0.1rem, -0.16rem) rotate(-45deg); width: 0.7rem; height: 0.25rem;}
+
+section.project figure div.slider { width: 100%; height: 100%; transition: 1000ms ease; display: flex; }
+section.project figure .img {position: relative; width: 100%; height: 100%; flex-shrink: 0; user-select: none;}
+section.project figure .img img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+
+section.project > .narrow .articles {overflow: hidden; max-width: 12rem; position: relative; pointer-events: none;}
+section.project > .narrow .articles::after {content: "";border-bottom: 1px solid #b0b0a1; display: block; height: 100%;  width: 100%; max-width: 11rem;  position: absolute; bottom: 0; left: 0;}
+section.project > .narrow .slider { display: flex; position: relative; pointer-events: none; transition: 1000ms ease;}   
+section.project > .narrow .slider article {flex-shrink: 0; pointer-events: all;}
+
+
+/* NON-HOMEPAGE GENERAL STUFF */
+#breadcrumbs a, #breadcrumbs span {color: #F20587; }
+body:not(.home) header > nav > ul > li:nth-of-type(1) { left: auto; transform-origin: bottom left; transform: translateY(-1.4rem) rotate(90deg)}
+body:not(.home) header > nav > ul > li:nth-of-type(4) {display: none;}
+body header > nav > ul > li:nth-of-type(5) {display: none;}
+
+
+/* FULL PORTFOLIO PAGE */
+section.intro {height: calc(100vh + 5rem); position: relative; }
+section.intro figure {position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+section.intro figure video {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+
+section.grid {position: relative; margin-top: calc(-10vh - 5rem);}
+section.grid ul.filters {display: flex; width: calc(100% - 2rem); max-width: 37rem; justify-content: space-between; margin: 0 auto;}
+section.grid ul.filters li {margin: 1rem;}
+section.grid ul.filters li input {display: none;}
+section.grid ul.filters li label {color: #eee; font-weight: 500; text-transform: uppercase; user-select: none; padding: 1rem;}
+section.grid ul.filters li label:hover {animation: colorWheel 2s ease infinite;}
+section.grid ul.filters li input:checked + label {color: #F20587; animation: grow 1s ease forwards;}
+
+section.grid ul.grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); width: calc(100% - 2rem); max-width: 60rem; margin: 5rem auto 0 ; grid-gap: 1rem; margin-bottom: 5rem; }  
+section.grid ul.grid li { position: relative; height: 0; padding-bottom: 100%; overflow: hidden; display: none;}
+section.grid ul.grid li.active { display: block;}
+section.grid ul.grid li img { width: 100%; height: 100%; top: 0; left: 0; object-fit: cover; position: absolute;}
+section.grid ul.grid li span {opacity: 0; font-weight: 500; display: inline-block;position: absolute; bottom: 0.5rem; width: 100%; text-align: center; color:  #b0b0a1;  z-index: 1; transition: 500ms ease;}
+section.grid ul.grid li::after {content: ""; opacity: 1; display: block; position: absolute; width: 100%; height: 100%; top: 0; left: 0;  background: linear-gradient(180deg, transparent 0%, #000 100%); transition: 500ms ease; transform: translateY(100%)}
+section.grid ul.grid li:hover::after {transform: translateY(60%); pointer-events: none}
+section.grid ul.grid li:hover span {opacity: 1; pointer-events: none}
+
+.grad {content: ""; display: block; height: 100%; width: 100%; top: 0; position: absolute; left: 0; background: linear-gradient(180deg, transparent 0%, #b0b0a1 39%, #000 100%); z-index: 1;}
+.projects section:not(.intro) {z-index: 2;}
+section.logos { position: relative; padding-bottom: 10rem;}
+section.logos ul {display: flex;}
+section.logos ul li { max-width: 20rem; position: relative; width: 12rem; margin: 1rem 5rem; flex-shrink: 0; padding-bottom: 6.5%;  }
+section.logos ul li.img img {position: absolute; width: 100%; top: 0; left: 0;}
+section.logos ul li.img img.white {filter: grayscale(1) brightness(0) invert(100%); z-index: 1;}
+section.logos ul li.img img.pink {filter: grayscale(1) invert(15%) sepia(100%) saturate(4356%) hue-rotate(317deg) brightness(93%) contrast(105%); }
+section.logos ul li.img img.blue {filter: grayscale(1) invert(67%) sepia(7%) saturate(7495%) hue-rotate(138deg) brightness(103%) contrast(95%); }
+
+section.logos ul li.img:hover img.pink {animation: bounceUp 0.5s ease infinite alternate; }
+section.logos ul li.img:hover img.blue {animation: bounceDown 0.5s ease infinite alternate; }
+
+@keyframes bounceUp {
+    0%{transform: translateY(0rem); }
+    100%{transform: translateY(0.25rem) rotate(5deg);}
+}
+
+@keyframes bounceDown {
+    0%{transform: translateY(0rem);}
+    100%{transform: translateY(-0.25rem) rotate(-5deg);}
+}
+
+section.logos .overflower { overflow: hidden;}
+section.logos .overflower .row {display: flex;  animation: slide 30s linear infinite; margin-bottom: 2rem;}
+section.logos .overflower .row ul {flex-shrink: 0; }
+section.logos .overflower .reverse {width: 100%; display: flex; animation: slide 35s linear infinite reverse paused}
+section.logos .overflower .reverse:hover {animation-play-state: running !important;}
+
+section.logos .overflower .row:nth-of-type(2) { animation: slide 35s linear infinite reverse; }
+section.logos .overflower .row:nth-of-type(2) .reverse { animation: slide 40s linear infinite paused ; }
+
+@keyframes slide {
+    0% {transform: translateX(0%)}
+    100% {transform: translateX(-50%)}
+}
+
+footer {max-width: 90rem; z-index: 2; position: relative; padding-bottom: 2rem; color: #b0b0a1; font-weight: 500; font-size: 0.7rem;}
+footer > ul {display: flex; justify-content: space-between; max-width: 60rem; width: calc(100% - 2rem); margin: 0 auto; align-items: flex-end; }
+footer > ul ul {display: flex; flex-direction: column;}
+footer > ul li:nth-of-type(2) ul {text-align: center; text-transform: uppercase; font-size: 1.2rem;} 
+footer > ul li:nth-of-type(3) ul {text-align: right;}
+footer > ul li a {color: #b0b0a1;}
+footer > ul li.fakehover:hover a {animation: colorWheel 2s ease infinite;}
+footer > ul li.banked {color: #F20587;}
+

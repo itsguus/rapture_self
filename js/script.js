@@ -1,46 +1,375 @@
-function removeLoadingScreen(el) {
-    el.classList.add("loaded");
+// ----------------DEV MODE-----------------------------------------------
+const devMode = false;
+if (devMode) {
+    document.body.classList.add("loaded");
+    document.querySelector("div.loading").style = "display: none;"
+} else
+removeLoadingScreen();
+
+
+// ----------------GLOBAL VARIABLES---------------------------------------
+let homePage = false,
+    portfolioPage = false,
+    projectPage = false,
+    currentVideo,
+    currentVideoTimer;
+
+if (document.body.classList.contains("home")) homePage = true;
+else if (document.body.classList.contains("projects")) portfolioPage = true;
+else if (document.body.classList.contains("project")) projectPage = true;
+
+const mouseBoundaries = {
+    x: 20, // offset in % from the middle
+    y: 65 // so this / 4 on both sides to get 100%; 
+},
+    animationTime = 1000,
+    mouseCursor = document.querySelector("#fakemouse")
+
+
+
+// ----------------FUNCTIONS ---------------------------------------
+function removeLoadingScreen() {
+    document.body.classList.add("loaded");
 }
 
 function collapseArticle(el) {
-    const collapsed = el.getAttribute('data-collapsed'),
-        article = el.parentNode.querySelector('.content');
-    if (collapsed == 0) {
-        const articleHeight = article.offsetHeight;
-        article.parentNode.classList.add("collapsed")
-        article.setAttribute("data-height", articleHeight);
-        el.setAttribute("data-collapsed", 1);
-        article.style = "height: 0";
-    }
-    else {
-        const articleHeight = article.getAttribute("data-height");
-        article.style = `height: ${articleHeight}px`;
-        article.parentNode.classList.remove("collapsed");
-        el.setAttribute("data-collapsed", 0);
+    if (!el.classList.contains('animating')) {
+        el.classList.add("animating")
+        {
+            const collapsed = el.getAttribute('data-collapsed'),
+                articles = document.querySelectorAll('article .content');
+            if (collapsed == 0) {
+                articles.forEach(article => {
+                    const articleHeight = article.offsetHeight;
+                    article.parentNode.classList.add("collapsed")
+                    article.setAttribute("data-height", articleHeight);
+                    article.parentNode.querySelector("span").setAttribute("data-collapsed", 1);
+                    article.style = "height: 0";
+
+                    const span = article.parentNode.querySelector('span'),
+                        h2 = article.parentNode.querySelector('h2');
+                    h2.style = `margin-top: ${articleHeight}px`;
+                    span.style = `margin-top: ${articleHeight}px`;
+                })
+            }
+            else {
+
+                articles.forEach(article => {
+                    const articleHeight = article.getAttribute("data-height");
+                    article.style = `height: ${articleHeight}px`;
+                    article.parentNode.classList.remove("collapsed");
+                    article.parentNode.querySelector("span").setAttribute("data-collapsed", 0);
+                });
+            }
+        }
+        setTimeout(() => { el.classList.remove("animating") }, 500);
     }
 }
 
-
-
-document.querySelectorAll(".narrow article .content").forEach(
-    article => {
-        setHeight(article);
-    }
-)
 function setHeight(el) {
     const height = el.offsetHeight
     el.style = `height: ${height}px`;
 }
 
+function playVideo(el) {
+    const pos = el.getAttribute("data-pos");
+    currentVideo = document.querySelectorAll("video")[pos];
+    const videoLength = currentVideo.duration;
+    currentVideo.pause();
+    currentVideo.currentTime = 0;
+    currentVideo.play();
 
-var videoLength = 90; // seconds
-function playVideo() {
-    const animatedEls = document.querySelectorAll(".an");
-    console.log(animatedEls);
-    animatedEls.forEach(el => {
+    clearTimeout(currentVideoTimer);
+    currentVideoTimer = setTimeout(() => {
+        nextProject();
+    }, videoLength * 1000);
+
+    const cls = el.getAttribute("data-for"),
+        allAnimatedEls = document.querySelectorAll(".an"),
+        necessaryAnimatedEls = document.querySelectorAll(`.${cls} .an`);
+
+    allAnimatedEls.forEach(el => { el.style = `transition: 500ms ease`; });
+
+    necessaryAnimatedEls.forEach(el => {
         el.style = `transition:${videoLength}s linear`;
+        if (el.tagName == "circle") el.style = `transition: stroke-dashoffset ${videoLength}s linear`
     });
-        document.querySelector(".progress").classList.add("active")
+
+    document.querySelectorAll(`.progress`).forEach((el) => { el.classList.remove('active'); });
+    document.querySelector(`.${cls}.progress`).classList.add('active');
+    document.querySelector("#fakemouse").classList.remove("fakehover");
 }
 
-playVideo();
+function startFirstVideo() {
+    const firstInput = document.querySelector(".progressbox > input[type=radio]");
+    firstInput.checked = true;
+    playVideo(firstInput);
+}
+
+function cursorCheck(e, x, y, click) {
+    const xTotal = window.innerWidth,
+        yTotal = window.innerHeight,
+        yPerc = y / yTotal * 100,
+        xPerc = x / xTotal * 100,
+        yBoundaries = {
+            min: mouseBoundaries.y / 4,
+            max: 100 - (mouseBoundaries.y / 4)
+        }; // min; max
+
+
+    if (!e.target.classList.contains("arrow--possible")) {
+        resetMouse();
+        return;
+    }
+    if (yPerc > yBoundaries.min && yPerc < yBoundaries.max) {
+        const xBoundaries = {
+            left: {
+                min: 0,
+                max: 50 - mouseBoundaries.x
+            },
+            right: {
+                min: 50 + mouseBoundaries.x,
+                max: 100
+            }
+        }
+
+        if (xPerc > xBoundaries.left.min && xPerc < xBoundaries.left.max) {
+            // arrow left
+            mouseCursor.classList.remove("right");
+            mouseCursor.classList.add("left");
+            if (click) previousProject(e);
+        }
+
+        else if (xPerc > xBoundaries.right.min && xPerc < xBoundaries.right.max) {
+            // arrow right
+            mouseCursor.classList.remove("left");
+            mouseCursor.classList.add("right");
+            if (click) nextProject(e);
+        }
+        else if (xPerc > xBoundaries.left.max && xPerc < xBoundaries.right.min) {
+            resetMouse();
+        }
+    }
+    else if (yPerc < yBoundaries.min || yPerc > yBoundaries.max) {
+        resetMouse();
+    }
+}
+
+function resetMouse() {
+    mouseCursor.classList.remove("left");
+    mouseCursor.classList.remove("right");
+}
+
+function nextProject() {
+    const fig = document.querySelector("section.project > figure");
+    if (!fig.classList.contains("animating")) {
+        fig.classList.add("animating");
+        { // when not animating
+            moveImages("right");
+            moveArticles("right");
+            setVideo();
+        }
+        setTimeout(() => { fig.classList.remove("animating") }, animationTime);
+    }
+}
+
+function previousProject() {
+    const fig = document.querySelector("section.project > figure");
+    if (!fig.classList.contains("animating")) {
+        fig.classList.add("animating");
+        { // when not animating
+            moveImages("left");
+            moveArticles("left");
+            setVideo();
+        }
+        setTimeout(() => { fig.classList.remove("animating") }, animationTime);
+    }
+}
+
+function setProject(el) {
+    const pos = el.getAttribute("data-pos");
+    moveImages(pos);
+    moveArticles(pos);
+    playVideo(el);
+}
+
+function moveImages(dir) {
+    const allImages = document.querySelectorAll("section.project figure video"),
+        slider = document.querySelector("figure div.slider");
+    let oldIndex = slider.getAttribute('data-pos'), newIndex;
+    if (dir == "right") {
+        newIndex = parseInt(oldIndex) - 1;
+        if (newIndex < (allImages.length - 1) * -1) newIndex = 0;
+    }
+    else if (dir == "left") {
+        newIndex = parseInt(oldIndex) + 1;
+        if (newIndex > 0) newIndex = (allImages.length - 1) * -1;
+    }
+    else { // index given
+        newIndex = parseInt(dir * -1);
+    }
+    slider.style = `transform: translate3d(${newIndex * 100}%,0,0);`
+    slider.setAttribute("data-pos", newIndex);
+}
+
+function moveArticles(dir) {
+    const allArticles = document.querySelectorAll("section.project .narrow article"),
+        slider = document.querySelector(".narrow div.slider");
+    let oldIndex = slider.getAttribute('data-pos'), newIndex;
+    if (dir == "right") {
+        newIndex = parseInt(oldIndex) - 1;
+        if (newIndex < (allArticles.length - 1) * -1) newIndex = 0;
+    }
+    else if (dir == "left") {
+        newIndex = parseInt(oldIndex) + 1;
+        if (newIndex > 0) newIndex = (allArticles.length - 1) * -1;
+    }
+    else { // index given
+        newIndex = parseInt(dir * -1);
+    }
+    slider.style = `transform: translate3d(calc(${newIndex * 100}% + ${newIndex * 2}rem),0,0);`
+    slider.setAttribute("data-pos", newIndex);
+}
+
+function setVideo() {
+    const pos = Math.abs(document.querySelector(".slider").getAttribute("data-pos")),
+        radios = document.querySelectorAll(".progressbox input");
+    playVideo(radios[pos]);
+}
+
+function runFilter() {
+    const checkedFilterNodes = document.querySelectorAll(".filters input:checked"),
+        allProjects = document.querySelectorAll("ul.grid > li");
+
+    if (checkedFilterNodes.length === 0) {
+        for (const project of allProjects) {
+            project.classList.add("active");
+        }
+        return;
+    }
+
+    for (const project of allProjects) {
+        project.classList.remove('active');
+        for (const node of checkedFilterNodes) {
+            const filter = node.getAttribute("data-for");
+            if (project.classList.contains(filter)) {
+                project.classList.add("active");
+            }
+        }
+    }
+}
+
+// ----------------FAKE MOUSE EVENTS------------------------------------
+window.addEventListener("mousemove", (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    mouseCursor.style = `transform: translate3d(${x}px,${y}px,0)`;
+    if (homePage) cursorCheck(e, x, y, false) // for arrow animations
+})
+
+window.addEventListener("click", (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    if (homePage) cursorCheck(e, x, y, true) // for arrow animations
+})
+
+
+document.querySelectorAll('.fakehover').forEach((e) => {
+    e.addEventListener("mouseenter", (el) => {
+        if (el.target.nextElementSibling && el.target.nextElementSibling.classList.contains("active")) return;
+        document.querySelector("#fakemouse").classList.add("fakehover");
+    });
+    e.addEventListener("mouseleave", () => {
+        document.querySelector("#fakemouse").classList.remove("fakehover");
+    });
+});
+
+
+function setUlWidths() {
+    let uls = document.querySelectorAll(".overflower .row ul");
+    for (const ul of uls) {
+        const listItems = ul.querySelectorAll('li');
+        let totalWidth = 0;
+        for (const li of listItems) {
+            const w = li.offsetWidth + 200;
+            totalWidth += w;
+        }
+        // ul.style = `width: ${totalWidth}px`
+        ul.parentNode.parentNode.style = `width: ${totalWidth * 2}px;`
+    }
+}
+
+function setGradHeight() {
+    document.querySelector(".grad").style = `height: ${document.body.offsetHeight}px`;
+}
+
+function footerInterval(counter) {
+    counter++;
+    if (counter > 2) counter = 0;
+    const listItems = document.querySelectorAll('footer ul > li:nth-of-type(2) > ul > li');
+    listItems.forEach(li => {
+        li.classList.remove("banked");
+    })
+    listItems[counter].classList.add("banked");
+    setTimeout(() => {
+        footerInterval(counter);
+    }, 2000);
+}
+
+function scrollFunction() {
+    const y = window.scrollY,
+    threshold = 50; 
+    addOrRemoveClassAfter(y, threshold, document.body ,"scrolled");
+}
+
+function addOrRemoveClassAfter(y, thresholdInPx, node, className) {
+    if(y < thresholdInPx && node.classList.contains(className)) node.classList.remove(className);
+    else if( y >= thresholdInPx && !node.classList.contains(className)) node.classList.add(className);
+}
+
+
+// ----------------HOMEPAGE FUNCTION CALLS----------------------------------
+if (homePage) {
+    const firstVid = document.querySelector("video");
+    let loaded = false;
+
+    document.querySelectorAll(".narrow article .content").forEach(article => {
+        setHeight(article);
+    });
+
+    window.onload =  () => {
+        if (!loaded) {
+            removeLoadingScreen();
+            setTimeout(startFirstVideo, 750);
+            loaded = true;
+        }
+    }
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key == "ArrowRight") nextProject();
+        else if (e.key == "ArrowLeft") previousProject();
+        else if (e.key == "ArrowDown" || e.key == "ArrowUp") {
+            const article = document.querySelector('.articles article'),
+                collapsed = article.querySelector("span").getAttribute("data-collapsed");
+            if (e.key == "ArrowDown" && collapsed == 0 || e.key == "ArrowUp" && collapsed == 1) collapseArticle(document.querySelector('article .btn.fakehover'));
+        }
+    });
+}
+
+// --------------- FULL PORTFOLIO PAGE FUNCTION CALLS----------------------------------
+
+else if (portfolioPage) {
+    setUlWidths();
+    setGradHeight();
+    footerInterval(0);
+    window.addEventListener("resize", () => {
+        setUlWidths();
+        setGradHeight();
+    });
+}
+// --------------- PROJECT PAGE FUNCTION CALLS----------------------------------
+
+else if(projectPage) {
+    setGradHeight();
+    window.addEventListener("scroll", scrollFunction);
+}
