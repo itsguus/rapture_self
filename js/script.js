@@ -3,8 +3,9 @@ const devMode = false;
 if (devMode) {
     document.body.classList.add("loaded");
     document.querySelector("div.loading").style = "display: none;"
-} else
-removeLoadingScreen();
+}
+//  else
+//     removeLoadingScreen();
 
 
 // ----------------GLOBAL VARIABLES---------------------------------------
@@ -22,8 +23,8 @@ const mouseBoundaries = {
     x: 20, // offset in % from the middle
     y: 65 // so this / 4 on both sides to get 100%; 
 },
-    animationTime = 1000,
-    mouseCursor = document.querySelector("#fakemouse")
+    animationTime = 1000, // globally used
+    mouseCursor = document.querySelector("#fakemouse");
 
 
 
@@ -73,37 +74,46 @@ function setHeight(el) {
 
 function playVideo(el) {
     const pos = el.getAttribute("data-pos");
-    currentVideo = document.querySelectorAll("video")[pos];
-    const videoLength = currentVideo.duration;
-    currentVideo.pause();
-    currentVideo.currentTime = 0;
-    currentVideo.play();
+    currentVideo = players[pos];
+    players[pos].getDuration().then(function (videoLength) {
 
-    clearTimeout(currentVideoTimer);
-    currentVideoTimer = setTimeout(() => {
-        nextProject();
-    }, videoLength * 1000);
+        currentVideo.unload();
+        currentVideo.play();
 
-    const cls = el.getAttribute("data-for"),
-        allAnimatedEls = document.querySelectorAll(".an"),
-        necessaryAnimatedEls = document.querySelectorAll(`.${cls} .an`);
+        clearTimeout(currentVideoTimer);
+        currentVideoTimer = setTimeout(() => {
+            nextProject();
+        }, videoLength * 1000); // ms to s
 
-    allAnimatedEls.forEach(el => { el.style = `transition: 500ms ease`; });
+        const cls = el.getAttribute("data-for"),
+            allAnimatedEls = document.querySelectorAll(".an"),
+            necessaryAnimatedEls = document.querySelectorAll(`.${cls} .an`);
 
-    necessaryAnimatedEls.forEach(el => {
-        el.style = `transition:${videoLength}s linear`;
-        if (el.tagName == "circle") el.style = `transition: stroke-dashoffset ${videoLength}s linear`
-    });
+        allAnimatedEls.forEach(el => { el.style = `transition: 500ms ease`; });
 
-    document.querySelectorAll(`.progress`).forEach((el) => { el.classList.remove('active'); });
-    document.querySelector(`.${cls}.progress`).classList.add('active');
-    document.querySelector("#fakemouse").classList.remove("fakehover");
+        necessaryAnimatedEls.forEach(el => {
+            el.style = `transition:${videoLength}s linear`;
+            if (el.tagName == "circle") el.style = `transition: stroke-dashoffset ${videoLength}s linear`
+        });
+
+        document.querySelectorAll(`.progress`).forEach((el) => { el.classList.remove('active'); });
+        document.querySelector(`.${cls}.progress`).classList.add('active');
+        document.querySelector("#fakemouse").classList.remove("fakehover");
+    })
 }
 
 function startFirstVideo() {
-    const firstInput = document.querySelector(".progressbox > input[type=radio]");
+    const firstInput = document.querySelector(".progressbox > input[type=radio]"),
+        firstVideoBox = document.querySelector("section.project figure .img");
+    firstVideoBox.classList.add("front");
     firstInput.checked = true;
+    players[0].ready().then(() => { removeLoadingScreen(); })
     playVideo(firstInput);
+}
+function startFirstVideoAlt() {
+    const iframe = document.querySelector("iframe");
+    var player = new Vimeo.Player(iframe);
+    player.ready().then(() => { removeLoadingScreen(); })
 }
 
 function cursorCheck(e, x, y, click) {
@@ -115,6 +125,7 @@ function cursorCheck(e, x, y, click) {
             min: mouseBoundaries.y / 4,
             max: 100 - (mouseBoundaries.y / 4)
         }; // min; max
+
 
 
     if (!e.target.classList.contains("arrow--possible")) {
@@ -193,8 +204,10 @@ function setProject(el) {
     playVideo(el);
 }
 
+
+
 function moveImages(dir) {
-    const allImages = document.querySelectorAll("section.project figure video"),
+    const allImages = document.querySelectorAll("section.project figure .img"),
         slider = document.querySelector("figure div.slider");
     let oldIndex = slider.getAttribute('data-pos'), newIndex;
     if (dir == "right") {
@@ -210,6 +223,14 @@ function moveImages(dir) {
     }
     slider.style = `transform: translate3d(${newIndex * 100}%,0,0);`
     slider.setAttribute("data-pos", newIndex);
+    setCorrectImgFront(allImages, -newIndex);
+}
+
+function setCorrectImgFront(allImages, newIndex) {
+    allImages.forEach((img) => {
+        img.classList.remove("front");
+    });
+    allImages[newIndex].classList.add("front");
 }
 
 function moveArticles(dir) {
@@ -259,6 +280,41 @@ function runFilter() {
     }
 }
 
+
+
+function changeFavicon(counter) {
+    counter++;
+    if (counter > 3) counter = 1;
+    document.querySelectorAll("link.favicon").forEach((link) => {
+        link.setAttribute("href", `/img/icon-196x196-${counter}.png`)
+    })
+
+    setTimeout(() => {
+        changeFavicon(counter)
+    }, animationTime);
+}
+
+function resizeIFrame() {
+    const w = window.innerWidth,
+        h = window.innerHeight,
+        allDivs = document.querySelectorAll(".img .resize"),
+        appBreakPointWidth = 500;
+    if (w < appBreakPointWidth) return;
+    var scale = 1,
+    aspectRatioBrowser = w/h;
+    aspectRatio = 16/9;
+    extraScaleMobile = 1.4;
+    if (aspectRatioBrowser < 1) { // gives white border at the bottom
+        scale = (scale + (aspectRatio - aspectRatioBrowser)) * extraScaleMobile;
+    }
+    else if (aspectRatioBrowser < aspectRatio && aspectRatioBrowser >= 1) {
+        scale = scale + (aspectRatio - aspectRatioBrowser);
+    }
+    allDivs.forEach((div) => {
+        div.style = `transform: scale(${scale});`
+    });
+}
+
 // ----------------FAKE MOUSE EVENTS------------------------------------
 window.addEventListener("mousemove", (e) => {
     const x = e.clientX;
@@ -284,6 +340,7 @@ document.querySelectorAll('.fakehover').forEach((e) => {
     });
 });
 
+// ----------------FULL PORTFOLIO FUNCTIONS------------------------------------
 
 function setUlWidths() {
     let uls = document.querySelectorAll(".overflower .row ul");
@@ -300,50 +357,144 @@ function setUlWidths() {
 }
 
 function setGradHeight() {
-    document.querySelector(".grad").style = `height: ${document.body.offsetHeight}px`;
+    const vh = window.innerHeight,
+        docHeight = document.body.offsetHeight,
+        perc = parseInt(vh / docHeight * 100);
+    var max = 100,
+        color = "#b0b0a1"
+    if (projectPage) {
+        max = 150;
+        color = "#fff"
+    }
+    document.querySelector(".grad").style = `height: ${docHeight}px; background: linear-gradient(180deg, transparent 0%, ${color} ${perc}%, #000 ${max}%)`;
 }
 
 function footerInterval(counter) {
     counter++;
-    if (counter > 2) counter = 0;
+    if (counter > 2) {
+        counter = -1;
+    }
     const listItems = document.querySelectorAll('footer ul > li:nth-of-type(2) > ul > li');
     listItems.forEach(li => {
         li.classList.remove("banked");
     })
-    listItems[counter].classList.add("banked");
+    if (counter >= 0) listItems[counter].classList.add("banked");
     setTimeout(() => {
         footerInterval(counter);
     }, 2000);
 }
 
+// ----------------HOMEPAGE FUNCTIONS----------------------------------
+function intersectObserveText() {
+    let options = {
+        root: document.querySelector('#scrollArea'),
+        rootMargin: '0px',
+        threshold: 1.0
+    }
+
+    let callback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+            }
+            else entry.target.classList.remove("show");
+        });
+    };
+    let observer = new IntersectionObserver(callback, options);
+    let target = document.querySelector('div.md');
+    observer.observe(target);
+}
+
+
 function scrollFunction() {
     const y = window.scrollY,
-    threshold = 50; 
-    addOrRemoveClassAfter(y, threshold, document.body ,"scrolled");
+        threshold = 100;
+    addOrRemoveClassAfter(y, threshold, document.body, "scrolled");
 }
 
 function addOrRemoveClassAfter(y, thresholdInPx, node, className) {
-    if(y < thresholdInPx && node.classList.contains(className)) node.classList.remove(className);
-    else if( y >= thresholdInPx && !node.classList.contains(className)) node.classList.add(className);
+    if (y < thresholdInPx && node.classList.contains(className)) node.classList.remove(className);
+    else if (y >= thresholdInPx && !node.classList.contains(className)) node.classList.add(className);
 }
+
+function setProjectArrowListeners() {
+    const hoverRegion = document.querySelector("section.related");
+    hoverRegion.addEventListener("mousemove", (e) => {
+        if (e.target.classList.contains("left")) {
+            mouseCursor.classList.remove("right");
+            mouseCursor.classList.add("left");
+        }
+        else if (e.target.classList.contains("right")) {
+            mouseCursor.classList.remove("left");
+            mouseCursor.classList.add("right");
+        }
+        else resetMouse();
+    });
+
+    hoverRegion.addEventListener("mouseleave", resetMouse);
+}
+
+function slideProjects(el, direction) { // direction -1 is left, 1 is right. 
+    var ul = el.parentNode.querySelector(".slider ul");
+    if (!ul.classList.contains("animating")) {
+        ul.classList.add("animating");
+        {
+            const lis = ul.querySelectorAll("li");
+            let pos = parseInt(ul.getAttribute('data-pos'));
+            const maxSlide = (lis.length - 2) * -1,
+                minSlide = 0;
+
+            pos = pos + direction;
+
+            if (pos < maxSlide || pos > minSlide) {
+                shake(ul, pos, direction)
+                setTimeout(() => { ul.classList.remove("animating") }, 500)
+                return;
+            }
+
+            const transXperc = 50 * pos,
+                transXrem = 0.5 * pos;
+            ul.setAttribute('data-pos', pos);
+            ul.style = `transform: translate3d(calc(${transXperc}% + ${transXrem}rem), 0, 0);`;
+        }
+        setTimeout(() => { ul.classList.remove("animating") }, 500)
+    }
+}
+
+function shake(el, pos, direction) {
+    if (direction > 0) { // shake left
+        el.style = `transform: translate3d(1.5%, 0,0)`
+        setTimeout(() => { el.style = `transform:translate3d(0,0,0);` }, 250);
+    }
+    else {
+        el.style = `transform: translate3d(calc(${(pos + 1) * 50 - 1.5}% + ${pos * 0.5}rem), 0, 0);`
+        setTimeout(() => { el.style = `transform: translate3d(calc(${(pos + 1) * 50}% + ${pos * 0.5}rem), 0, 0);` }, 250);
+    }
+}
+
+// ----------------ALL PAGES FUNCTION CALLS----------------------------------
+changeFavicon(1); 
 
 
 // ----------------HOMEPAGE FUNCTION CALLS----------------------------------
 if (homePage) {
-    const firstVid = document.querySelector("video");
+    const iframes = document.querySelectorAll("section.project .slider .img iframe");
+    var players = [];
+    players[0] = new Vimeo.Player(iframes[0]);
+    players[1] = new Vimeo.Player(iframes[1]);
+    players[2] = new Vimeo.Player(iframes[2]);
+
     let loaded = false;
+    window.onload = () => {
+        if (!loaded) {
+            startFirstVideo();
+            loaded = true;
+        }
+    }
 
     document.querySelectorAll(".narrow article .content").forEach(article => {
         setHeight(article);
     });
-
-    window.onload =  () => {
-        if (!loaded) {
-            removeLoadingScreen();
-            setTimeout(startFirstVideo, 750);
-            loaded = true;
-        }
-    }
 
     document.addEventListener("keydown", (e) => {
         if (e.key == "ArrowRight") nextProject();
@@ -354,22 +505,38 @@ if (homePage) {
             if (e.key == "ArrowDown" && collapsed == 0 || e.key == "ArrowUp" && collapsed == 1) collapseArticle(document.querySelector('article .btn.fakehover'));
         }
     });
+
+    window.addEventListener("resize", resizeIFrame);
+    resizeIFrame();
+}
+
+// --------------- FULL PORTFOLIO PAGE & PROJECT PAGE FUNCTION CALLS----------------------------------
+
+if (portfolioPage || projectPage) {
+    startFirstVideoAlt();
+    footerInterval(0);
+    window.addEventListener("resize", () => {
+        setGradHeight();
+        resizeIFrame();
+    });
+    setTimeout(() => { setGradHeight(); }, 100);
+    resizeIFrame();
 }
 
 // --------------- FULL PORTFOLIO PAGE FUNCTION CALLS----------------------------------
-
-else if (portfolioPage) {
-    setUlWidths();
-    setGradHeight();
-    footerInterval(0);
+if (portfolioPage) {
     window.addEventListener("resize", () => {
         setUlWidths();
-        setGradHeight();
     });
+    setUlWidths();
 }
-// --------------- PROJECT PAGE FUNCTION CALLS----------------------------------
 
-else if(projectPage) {
-    setGradHeight();
+// --------------- PROJECT PAGE FUNCTION CALLS----------------------------------
+if (projectPage) {
     window.addEventListener("scroll", scrollFunction);
+    scrollFunction();
+    intersectObserveText();
+    setProjectArrowListeners();
 }
+
+

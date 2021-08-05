@@ -1,12 +1,19 @@
 * {padding: 0; margin: 0;  border: 0;}
 html {font-size: 20px; scroll-behavior: smooth;}
-body {font-size: 1rem; color: #1d1a1c; line-height: 1.4; font-family: "Geomanist"; font-weight: normal;  cursor: none;}
+body {font-size: 1rem; color: #1d1a1c; line-height: 1.4; font-family: "Geomanist"; font-weight: normal;  cursor: none; background: #000;}
 a {text-decoration: none; color: #1d1a1c; cursor: none;}
 ul, ol {list-style-type: none;}
 p {margin-bottom: 1.4em;}
 br {margin:0 !important; color: #F20587; color: #05DBF2}
 legend { display: none;}
 
+body.projects {overflow: hidden;}
+body.projects.loaded {animation: enableScroll 10ms linear forwards; animation-delay: 1500ms; }
+
+@keyframes enableScroll {
+    0%{ overflow: hidden;}
+    100% {overflow: initial;}
+}
 
 /* HEADERS */
 h1,h2,h3,h4 {font-weight: bold; margin-bottom: 0.25rem}
@@ -45,7 +52,7 @@ header > nav > ul > li:nth-of-type(4) a {color: #FFF;}
 .rap::after { z-index: 1;  color: #1d1a1c; }
 .white.rap::after {color: #FFF; }
 
-div.loading { height: 100%; width: 100%;  position: absolute; z-index: 99;  overflow: hidden}
+div.loading { height: 100%; width: 100%;  position: absolute; z-index: 99;  overflow: hidden; position: fixed; top: 0; left: 0;}
 div.loading::before {content: ""; display: block; height: 100%; width: 100%; background: #000; position: absolute; transition: 500ms ease; transition-delay: 1500ms;}
 div.loading .box { display: flex; flex-direction: column; align-items: flex-end; ; max-width: 95rem; margin:0 auto; position: relative;}
 
@@ -101,9 +108,10 @@ div.loading .rapbox h1 {position: relative; margin-top: 0;}
 section.project {height: 100vh; display: flex; align-items: flex-end; justify-content: center;}
 section.project figure { width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: hidden;}
 section.project figure video {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: 1000ms ease;}
-section.project .narrow { z-index: 1; margin: 2rem auto; display: flex; justify-content: center; max-width: 55rem; width: calc(100% - 2rem); height: calc(100% - 2rem); align-items: flex-end;}
+section.project .container {width: 100%; height: 100%; }
+section.project .narrow { z-index: 1; margin: 2rem auto; display: flex; justify-content: center; width:100%; height: calc(100% - 2rem); align-items: flex-end; position: relative;}
 section.project .narrow article {max-width: 12rem; position: relative; margin-left: auto; margin-right: 2rem;}
-section.project .narrow article > h2 {text-transform: lowercase; color:#F20587; font-size: 2.5rem; line-height: 1.2}
+section.project .narrow article > h2 {text-transform: lowercase; color:#F20587; font-size: 2.2rem; line-height: 1.2; }
 section.project .narrow article > * {color: #b0b0a1; font-weight: 500; font-size: 0.65rem}
 
 section.project .narrow article span { display: block; position: absolute; height: 1rem; width: 2rem;  top: 0.9rem; right: 0.5rem;  padding: 1rem;}
@@ -192,10 +200,6 @@ body,
 a, .fakehover { cursor: initial}  */
 
 
-@media only screen and (max-width: 1500px) {
-    header > nav > ul > li:nth-of-type(4) { bottom: calc(100% - 2.6rem); right: 3.5rem}
-}
-
 
 /* #fakemouse { transform: translate3d(20rem, 25rem, 0) scale(10)} */
 
@@ -212,13 +216,14 @@ a, .fakehover { cursor: initial}  */
 #fakemouse.left:not(.fakehover) > div > div.arrow3 {transform: translate(-0.1rem, -0.16rem) rotate(-45deg); width: 0.7rem; height: 0.25rem;}
 
 section.project figure div.slider { width: 100%; height: 100%; transition: 1000ms ease; display: flex; }
-section.project figure .img {position: relative; width: 100%; height: 100%; flex-shrink: 0; user-select: none;}
-section.project figure .img img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.project figure .img {position: relative; width: 100%; height: 100%; flex-shrink: 0; user-select: none; }
+.img .resize {position: absolute; top: 0; left: 0; width: 100%; height: 100%;transform-origin: top;}
+section.project figure .slider .img.front {z-index: 1;}
 
-section.project > .narrow .articles {overflow: hidden; max-width: 12rem; position: relative; pointer-events: none;}
-section.project > .narrow .articles::after {content: "";border-bottom: 1px solid #b0b0a1; display: block; height: 100%;  width: 100%; max-width: 11rem;  position: absolute; bottom: 0; left: 0;}
-section.project > .narrow .slider { display: flex; position: relative; pointer-events: none; transition: 1000ms ease;}   
-section.project > .narrow .slider article {flex-shrink: 0; pointer-events: all;}
+section.project .narrow .articles {overflow: hidden; max-width: 12rem; position: relative; pointer-events: none; margin-right: auto;}
+section.project .narrow .articles::after {content: "";border-bottom: 1px solid #b0b0a1; display: block; height: 100%;  width: 100%; max-width: 11rem;  position: absolute; bottom: 0; left: 0;}
+section.project .narrow .slider { display: flex; position: relative; pointer-events: none; transition: 1000ms ease; align-items: flex-end;}   
+section.project .narrow .slider article {flex-shrink: 0; pointer-events: all;}
 
 
 /* NON-HOMEPAGE GENERAL STUFF */
@@ -230,8 +235,7 @@ body header > nav > ul > li:nth-of-type(5) {display: none;}
 
 /* FULL PORTFOLIO PAGE */
 section.intro {height: calc(100vh + 5rem); position: relative; }
-section.intro figure {position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-section.intro figure video {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.intro figure {position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;}
 
 section.grid {position: relative; margin-top: calc(-10vh - 5rem);}
 section.grid ul.filters {display: flex; width: calc(100% - 2rem); max-width: 37rem; justify-content: space-between; margin: 0 auto;}
@@ -250,7 +254,7 @@ section.grid ul.grid li::after {content: ""; opacity: 1; display: block; positio
 section.grid ul.grid li:hover::after {transform: translateY(60%); pointer-events: none}
 section.grid ul.grid li:hover span {opacity: 1; pointer-events: none}
 
-.grad {content: ""; display: block; height: 100%; width: 100%; top: 0; position: absolute; left: 0; background: linear-gradient(180deg, transparent 0%, #b0b0a1 39%, #000 100%); z-index: 1;}
+.grad {content: ""; display: block; height: 100%; width: 100%; top: 0; position: absolute; left: 0; background: linear-gradient(180deg, transparent 0%, #b0b0a1 39%, #000 100%); z-index: 1; transition: 150ms ease;}
 .projects section:not(.intro) {z-index: 2;}
 section.logos { position: relative; padding-bottom: 10rem;}
 section.logos ul {display: flex;}
@@ -294,5 +298,50 @@ footer > ul li:nth-of-type(2) ul {text-align: center; text-transform: uppercase;
 footer > ul li:nth-of-type(3) ul {text-align: right;}
 footer > ul li a {color: #b0b0a1;}
 footer > ul li.fakehover:hover a {animation: colorWheel 2s ease infinite;}
-footer > ul li.banked {color: #F20587;}
+footer > ul li.banked {color: #F20587;} 
 
+
+/* PROJECT PAGE */
+body.project:not(.home) header > nav > ul > li:nth-of-type(1) {right: 0; transform-origin: right; transform: rotate(90deg) translate(100%, 0)}
+.project div.loading .box {transition: 1000ms ease;}
+.project div.loading .rapbox h1::after { transition: 500ms ease;  }
+.project.loaded div.loading .box { margin-top: 30rem;  }
+.project.loaded div.loading .rapbox { transform: rotate(90deg) translateX(100%) }
+.project.loaded.scrolled div.loading .rapbox h1::after { color: #000; }
+
+section.content { position: relative; z-index: 2; max-width: 55rem; margin: 0 auto; display: flex; flex-direction: row-reverse; justify-content: space-between;}
+section.content article {max-width: 24rem; width: 100%; position: relative;}
+section.content article figure {width: 100%; height: 0; padding-bottom: 150%; position: relative;}
+section.content article figure img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.content h1 {color: #F20587; text-transform: lowercase;  font-size: 3rem; max-width: 70%; }
+section.content h1::after {content: ""; display: block; border-bottom: 1px solid #b0b0a1; width: 143%; margin-bottom: 0.5rem; }
+section.content article:last-of-type > div:not(.md) {display: flex; flex-direction: row; margin-bottom: 1rem; }
+section.content article:last-of-type > div figure {width: 60%; padding-bottom: 60%;}
+section.content article:last-of-type > div h3 {font-family: "Staatliches"; color: #aaa; font-size: 1.3rem; margin: 0 1.5rem; box-sizing: content-box; width: calc(40% - 3rem); transition: 500ms ease; } 
+section.content article:last-of-type > div:hover h3 {color: #05DBF2;}
+section.content article:last-of-type > div.md {color: #aaa; font-weight: 600; transition: 3s ease;}
+section.content article:last-of-type > div.md.show {color: #000; }
+
+section.related { position: relative; z-index: 2; margin: 6rem 0 4rem; width: 100%; overflow: hidden;}
+section.related h2 {font-size: 0.9rem; color: #F20587; max-width: 35rem; margin: 0 auto; text-transform: uppercase; width: calc(100% - 2rem); }
+section.related .slider {width: calc(100% - 2rem) ; padding-left: 1rem;}
+section.related .slider ul { display: flex; max-width: 35rem; margin: 0 auto; margin-top: 1.5rem;  transition: 500ms ease;}
+section.related .slider ul li {position: relative; flex-shrink: 0; margin-right: 0.5rem; width: 50%; }
+section.related .slider ul li a {position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;}
+section.related .slider ul li figure {width: 100%; padding-bottom: 200%; }
+section.related .slider ul li figure img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.related > a {position: absolute; height: 100%; width: 15%; left: 0;top: 0; z-index: 3;}
+section.related > a.right {left: auto; right: 0; }
+section.related > div:not(.slider) {max-width: 40rem; margin: 0 auto; width: calc(100% - 2rem); margin-top: -5rem; }
+section.related > div:not(.slider) h3 {margin: 0.2rem 0; font-size: 2rem;}
+
+
+@media only screen and (max-width: 1500px) {
+    header > nav > ul > li:nth-of-type(4) { bottom: calc(100% - 2.6rem); right: 3.5rem}
+}
+
+@media only screen and (max-width: 500px) {
+    section.grid ul.filters {width: 100%; }
+    section.grid ul.filters li {margin: 0.5rem; }
+    section.grid ul.filters li label {font-size: 0.8rem}
+}

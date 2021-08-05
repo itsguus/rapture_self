@@ -5,12 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
  
-<title>{% if page.title and page.title != 'Home' %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+<title>{% if page.title and page.title != 'Home' %}{{ page.title }} | {% endif %}{{ site.title | strip_html }}</title>
 {% assign pagecontent_description = page.content | markdownify | replace: '.', '. ' | replace: '</h2>', ': ' | replace: '</h3>', ': ' | replace: '</h4>', ': ' | strip_html | strip_newlines | replace: '  ', ' ' | truncate: 160 %}
 <meta name="description" content="{% if pagecontent_description.size > 10 %}{{ pagecontent_description }}{% else %}{{ site.description }}{% endif %}">
 
-<link rel="shortcut icon" type="image/png" href="/img/icon-196x196.png">
-<link rel="shortcut icon" sizes="196x196" href="/img/icon-196x196.png">
+<link class="favicon" rel="shortcut icon" type="image/png" href="/img/icon-196x196-1.png">
+<link class="favicon" rel="shortcut icon" sizes="196x196" href="/img/icon-196x196-1.png">
 <link rel="apple-touch-icon" href="/img/icon-196x196.png">
 
  <!-- Facebook integration -->
@@ -35,6 +35,9 @@
 
 <link rel="stylesheet" href="{{ "/css/style.css" | prepend: site.baseurl }}">
 <link rel="stylesheet" href="{{ "/css/fonts.css" | prepend: site.baseurl }}">
+
+<!-- Vimeo script -->
+<script src="https://player.vimeo.com/api/player.js"></script>
 
 </head>
 <body class="{{ page.layout }}" id="top">

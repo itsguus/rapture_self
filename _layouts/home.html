@@ -3,11 +3,16 @@
 <section class="project">
     <figure>
         <div class="slider" data-pos=0>
-            {% for selection in page.front_page_projects %}
+            {% assign front_page_projects = page.first_front_page_project | append: "," | append: page.second_front_page_project | append: "," | append:  page.third_front_page_project | split: "," %}
+            {% for selection in front_page_projects %}
                 {% for item in site.projects %}
                     {% if item.slug == selection %}
                     <div class="img">
-                        <video class="arrow--possible" loop muted playsinline src="{{ item.video_path }}"></video>
+                        <div class="resize">
+                            <div style="padding:56.25% 0 0 0;position:relative;">
+                                <iframe src="https://player.vimeo.com/video/{{ item.vimeo_code }}?&loop=1&title=0&byline=0&portrait=0&muted=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
                     </div>
                     {% endif %}
                 {% endfor %}
@@ -17,7 +22,7 @@
     <div class="narrow arrow--possible">
         <fieldset>
             <legend>Projects</legend>
-            {% for selection in page.front_page_projects %}
+            {% for selection in front_page_projects %}
             {% assign index = forloop.index0 %}
                 {% for item in site.projects %}
                     {% if item.slug == selection %}
@@ -29,14 +34,14 @@
         </fieldset>
         <div class="articles">
             <div class="slider" data-pos=0>
-                {% for selection in page.front_page_projects %}
+                {% for selection in front_page_projects %}
                     {% for item in site.projects %}
                         {% if item.slug == selection %}
                         <article>
                             <h2>{{ item.title }}</h2>
                             <span class="btn fakehover" data-collapsed=0 onclick="collapseArticle(this)"></span>
                             <div class="content">
-                                {{ item.content }}
+                                {{ item.homepage_text_markdown | markdownify }}
                             </div>
                         </article>
                         {% endif %}

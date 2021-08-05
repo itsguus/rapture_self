@@ -1,5 +1,5 @@
 ---
 title: Full Portfolio
 layout: projects
-background_video_path: /uploads/videos/test.mp4
+top_video_project: a-walk-amongst-tombstones
 ---

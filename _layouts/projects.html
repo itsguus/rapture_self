@@ -2,8 +2,17 @@
 <div class="grad"></div>
 
 <section class="intro">
-    <figure>
-        <video src="{{ page.background_video_path }}" loop autoplay muted playsinline></video>
+    <figure class="img">
+        <div class="resize">
+            <div style="padding:56.25% 0 0 0;position:relative;">
+                {% for item in site.projects %}
+                    {% if item.slug == page.top_video_project %}
+                        {% assign vimeo_id = item.vimeo_code %}
+                    {% endif %}
+                {% endfor %}
+                <iframe src="https://player.vimeo.com/video/{{ vimeo_id }}?&autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
     </figure>
 </section>
 
@@ -17,7 +26,7 @@
         {% for item in site.projects %}
             <li class="active {% for tag in item.tags %}{{ tag }} {% endfor %}"><a class="fakehover" href="{{ item.slug }}/">
                 <img src="{{ item.image }}" alt="{{ item.title }} RAPTURE">
-                <span>{{ item.title }}</span>
+                <span>{{ item.title | strip_html }}</span>
             </a></li>
         {% endfor %}
     </ul>
