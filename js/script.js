@@ -443,7 +443,7 @@ function slideProjects(el, direction) { // direction -1 is left, 1 is right.
     if (!ul.classList.contains("animating")) {
         ul.classList.add("animating");
         {
-            const lis = ul.querySelectorAll("li");
+            const lis = ul.querySelectorAll("li.fakehover");
             let pos = parseInt(ul.getAttribute('data-pos'));
             const maxSlide = (lis.length - 2) * -1,
                 minSlide = 0;
@@ -471,8 +471,9 @@ function shake(el, pos, direction) {
         setTimeout(() => { el.style = `transform:translate3d(0,0,0);` }, 250);
     }
     else {
-        el.style = `transform: translate3d(calc(${(pos + 1) * 50 - 1.5}% + ${pos * 0.5}rem), 0, 0);`
-        setTimeout(() => { el.style = `transform: translate3d(calc(${(pos + 1) * 50}% + ${pos * 0.5}rem), 0, 0);` }, 250);
+        
+        el.style = `transform: translate3d(calc(${(pos + 1) * 50 - 1.5}% + ${(pos + 1) * 0.5}rem), 0, 0);`
+        setTimeout(() => { el.style = `transform: translate3d(calc(${(pos + 1) * 50}% + ${(pos + 1) * 0.5}rem), 0, 0);` }, 250);
     }
 }
 

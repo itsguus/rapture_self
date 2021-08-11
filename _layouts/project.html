@@ -41,7 +41,7 @@
 
 <section class="related">
     <h2>Related Projects</h2>
-    <div class="slider">
+    <div class="slider hide--scrollbar">
         <ul data-pos=0>
             {% for item in site.projects %}
                 <li class="fakehover">
@@ -51,6 +51,7 @@
                     </figure>
                 </li>
             {% endfor %}
+            <li class="mobile fill"></li>
         </ul>
     </div>
     <a onclick="slideProjects(this, -1)" class="arrow right"></a>

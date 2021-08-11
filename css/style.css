@@ -13,6 +13,9 @@ body.mobile { cursor: initial;}
 
 img.mobile { display: none; }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide--scrollbar::-webkit-scrollbar { display: none; }
+.hide--scrollbar { -ms-overflow-style: none;  scrollbar-width: none; } 
 
 @keyframes enableScroll {
     0%{ overflow: hidden;}
@@ -337,13 +340,14 @@ section.related { position: relative; z-index: 2; margin: 6rem 0 4rem; width: 10
 section.related h2 {font-size: 0.9rem; color: #F20587; max-width: 35rem; margin: 0 auto; text-transform: uppercase; width: calc(100% - 2rem); }
 section.related .slider {width: calc(100% - 2rem) ; padding-left: 1rem;}
 section.related .slider ul { display: flex; max-width: 35rem; margin: 0 auto; margin-top: 1.5rem;  transition: 500ms ease;}
-section.related .slider ul li {position: relative; flex-shrink: 0; margin-right: 0.5rem; width: 50%; }
-section.related .slider ul li a {position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;}
-section.related .slider ul li figure {width: 100%; padding-bottom: 200%; }
-section.related .slider ul li figure img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.related .slider ul li.fakehover {position: relative; flex-shrink: 0; margin-right: 0.5rem; width: 50%; }
+section.related .slider ul li.fakehover a {position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;}
+section.related .slider ul li.fakehover figure {width: 100%; padding-bottom: 200%; }
+section.related .slider ul li.fakehover figure img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.related .slider ul li.fill {display: none;}
 section.related > a {position: absolute; height: 100%; width: 15%; left: 0;top: 0; z-index: 3;}
 section.related > a.right {left: auto; right: 0; }
-section.related > div:not(.slider) {max-width: 40rem; margin: 0 auto; width: calc(100% - 2rem); margin-top: -5rem; }
+section.related > div:not(.slider) {max-width: 40rem; margin: 0 auto; width: calc(100% - 2rem); margin-top: -5rem; pointer-events: none;}
 section.related > div:not(.slider) h3 {margin: 0.2rem 0; font-size: 2rem;}
 
 
@@ -352,6 +356,8 @@ section.related > div:not(.slider) h3 {margin: 0.2rem 0; font-size: 2rem;}
 }
 
 @media only screen and (max-width: 768px) {
+    img.mobile { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+
     section.project .narrow {flex-direction: column-reverse; justify-content: initial;}
     section.project .narrow .articles {margin: 0 auto; max-width: 17rem;}
     section.project .narrow .articles article {max-width: 17rem; width: 100%; }
@@ -366,10 +372,15 @@ section.related > div:not(.slider) h3 {margin: 0.2rem 0; font-size: 2rem;}
     section.content article:last-of-type > div h3 {font-size: 1rem;}
     section.content article:last-of-type > div.md {font-size: 0.8rem; font-weight: 500; }
 
-    img.mobile { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    section.related > a {width: 20%; }
+    
+    .mobile section.related .slider {width: 100%; padding-left: 1rem; overflow: scroll;}
+    .mobile section.related li.mobile.fill {display: block; width: 0; padding-right: 1.5rem;  }
+    .mobile section.related > a {display: none; }
     
     footer {margin-top: 8rem; }
     footer > ul li:nth-of-type(2) ul {transform: translateY(-100%);}
+    
 }
 
 @media only screen and (max-width: 500px) {
