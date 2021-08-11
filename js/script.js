@@ -1,5 +1,5 @@
 // ----------------DEV MODE-----------------------------------------------
-const devMode = true;
+const devMode = false;
 if (devMode) {
     document.body.classList.add("loaded");
     document.querySelector("div.loading").style = "display: none;"
