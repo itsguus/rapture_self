@@ -8,6 +8,7 @@
                 <iframe src="https://player.vimeo.com/video/{{ page.vimeo_code }}?&autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
+        <img class="mobile" src="/img/placeholder.jpg" alt="">
     </figure>
 </section>
 
@@ -15,21 +16,22 @@
     <article>
         <h1>{{ page.title }}</h1>
         <figure>
-            <img src="{{ page.image }}" alt="">
+            <a class="fakehover showText" href="https://vimeo.com/{{ page.vimeo_code }}"></a>
+            <iframe src="https://player.vimeo.com/video/{{ page.vimeo_code_9x16 }}?&autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
         </figure>
     </article>
     <article>
         <div class="social">
             <figure>
-                <img src="{{ page.image }}" alt="">
+                <iframe src="https://player.vimeo.com/video/{{ page.vimeo_code_1x1_1 }}?&autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
             </figure>
-            <h3>Social Media Versie 1</h3>
+            <h3>Social Media Version 1</h3>
         </div>
         <div class="social">
             <figure>
-                <img src="{{ page.image }}" alt="">
+                <iframe src="https://player.vimeo.com/video/{{ page.vimeo_code_1x1_2 }}?&autoplay=1&loop=1&title=0&byline=0&portrait=0&muted=1&background=1" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
             </figure>
-            <h3>Social Media Versie 2</h3>
+            <h3>Social Media Version 2</h3>
         </div>
         <div class="md">
             {{ content }}

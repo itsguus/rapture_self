@@ -1,5 +1,5 @@
 // ----------------DEV MODE-----------------------------------------------
-const devMode = false;
+const devMode = true;
 if (devMode) {
     document.body.classList.add("loaded");
     document.querySelector("div.loading").style = "display: none;"
@@ -110,6 +110,7 @@ function startFirstVideo() {
     players[0].ready().then(() => { removeLoadingScreen(); })
     playVideo(firstInput);
 }
+
 function startFirstVideoAlt() {
     const iframe = document.querySelector("iframe");
     var player = new Vimeo.Player(iframe);
@@ -128,7 +129,7 @@ function cursorCheck(e, x, y, click) {
 
 
 
-    if (!e.target.classList.contains("arrow--possible")) {
+    if (e.target.classList && !e.target.classList.contains("arrow--possible")) {
         resetMouse();
         return;
     }
@@ -291,7 +292,7 @@ function changeFavicon(counter) {
 
     setTimeout(() => {
         changeFavicon(counter)
-    }, animationTime);
+    }, animationTime * 3);
 }
 
 function resizeIFrame() {
@@ -301,8 +302,8 @@ function resizeIFrame() {
         appBreakPointWidth = 500;
     if (w < appBreakPointWidth) return;
     var scale = 1,
-    aspectRatioBrowser = w/h;
-    aspectRatio = 16/9;
+        aspectRatioBrowser = w / h;
+    aspectRatio = 16 / 9;
     extraScaleMobile = 1.4;
     if (aspectRatioBrowser < 1) { // gives white border at the bottom
         scale = (scale + (aspectRatio - aspectRatioBrowser)) * extraScaleMobile;
@@ -330,13 +331,16 @@ window.addEventListener("click", (e) => {
 })
 
 
-document.querySelectorAll('.fakehover').forEach((e) => {
-    e.addEventListener("mouseenter", (el) => {
-        if (el.target.nextElementSibling && el.target.nextElementSibling.classList.contains("active")) return;
+document.querySelectorAll('.fakehover').forEach((el) => {
+    el.addEventListener("mouseenter", (e) => {
+        if (e.target.nextElementSibling && e.target.nextElementSibling.classList.contains("active")) return;
         document.querySelector("#fakemouse").classList.add("fakehover");
+        
+        if(e.target.classList.contains("showText")) document.querySelector("#fakemouse .fullvideo").classList.add("show");
     });
-    e.addEventListener("mouseleave", () => {
+    el.addEventListener("mouseleave", () => {
         document.querySelector("#fakemouse").classList.remove("fakehover");
+        document.querySelector("#fakemouse .fullvideo").classList.remove("show");
     });
 });
 
@@ -472,8 +476,12 @@ function shake(el, pos, direction) {
     }
 }
 
+
 // ----------------ALL PAGES FUNCTION CALLS----------------------------------
-changeFavicon(1); 
+// changeFavicon(1);
+window.addEventListener("touchstart", () => {
+    document.body.classList.add("mobile");
+});
 
 
 // ----------------HOMEPAGE FUNCTION CALLS----------------------------------

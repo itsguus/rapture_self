@@ -9,6 +9,10 @@ legend { display: none;}
 
 body.projects {overflow: hidden;}
 body.projects.loaded {animation: enableScroll 10ms linear forwards; animation-delay: 1500ms; }
+body.mobile { cursor: initial;}
+
+img.mobile { display: none; }
+
 
 @keyframes enableScroll {
     0%{ overflow: hidden;}
@@ -21,7 +25,7 @@ h1, .h1 { font-size: 2rem;  font-weight: 500;}
 
 /* NAV */
 header > nav {position: absolute; z-index: 3; width: calc(100% - 4rem); height: calc(100% - 4rem); margin: auto; left: 0; right: 0; top: 0; bottom: 0; max-width: 90rem; pointer-events: none;}
-header > nav a, header > nav span {color: #b0b0a1; font-size: 0.8rem; font-weight: 500; pointer-events: all;}
+header > nav a, header > nav span {color: #FFF; font-size: 0.8rem; font-weight: 500; pointer-events: all;}
 header > nav a:hover {animation: colorWheel 2s ease infinite;}
 header > nav > ul > li {position: absolute;}
 header > nav > ul > li:first-of-type {text-transform: uppercase; top: 0; left: 0;}
@@ -95,7 +99,6 @@ div.loading .rapbox h1 {position: relative; margin-top: 0;}
     100% { font-size: 3.5rem; }
 }
 
-
 @keyframes join {
     0% {}
     99% {margin-top: 9vw; opacity: 1;}
@@ -111,14 +114,16 @@ section.project figure video {position: absolute; top: 0; left: 0; width: 100%; 
 section.project .container {width: 100%; height: 100%; }
 section.project .narrow { z-index: 1; margin: 2rem auto; display: flex; justify-content: center; width:100%; height: calc(100% - 2rem); align-items: flex-end; position: relative;}
 section.project .narrow article {max-width: 12rem; position: relative; margin-left: auto; margin-right: 2rem;}
-section.project .narrow article > h2 {text-transform: lowercase; color:#F20587; font-size: 2.2rem; line-height: 1.2; }
+section.project .narrow article > h2 {text-transform: lowercase; font-size: 2.2rem; line-height: 1.2; }
+section.project .narrow article > h2 a {color: #F20587; transition: 500ms ease;}
+section.project .narrow article > h2 a:hover {color: #05DBF2;}
 section.project .narrow article > * {color: #b0b0a1; font-weight: 500; font-size: 0.65rem}
 
-section.project .narrow article span { display: block; position: absolute; height: 1rem; width: 2rem;  top: 0.9rem; right: 0.5rem;  padding: 1rem;}
+section.project .narrow article span { display: block; position: absolute; height: 1rem; width: 1rem;  top: 0.9rem; right: 0.5rem;  padding: 0.5rem;}
 section.project .narrow article span::before { content: ""; display: block; position: absolute; height: 0.1rem; width: 1rem; background: #F20587; top: 0.49rem; right: 0.5rem; transition: 500ms ease;}
 section.project .narrow article span::after { content: ""; display: block; position: absolute; height: 0.1rem; width: 1rem; background: #F20587; top: 0.49rem; right: 0.5rem; transition: 500ms ease;}
 section.project .narrow article span:hover::before, 
-section.project .narrow article span:hover::after { height: 0.3rem; top: 0.39rem}
+section.project .narrow article span:hover::after { height: 0.3rem; top: 0.39rem; background: #05DBF2;}
 section.project .narrow article .content {transition: 500ms ease; height: auto; overflow: hidden;}
 
 section.project .narrow article.collapsed span:before { transform: rotate(270deg);}
@@ -150,12 +155,15 @@ section.project .narrow .progressbox input:hover + .progress:not(.active) {trans
 
 body:not(.loaded) #fakemouse > div > * { height: 8rem; width: 8rem; }
 #fakemouse { position: fixed; top: -13px; left: -11px; height: 1rem; width: 1rem;z-index: 99; transition: 5ms; pointer-events: none; transform: translate3d(-100rem, 0, 0)}
+.mobile #fakemouse { display:  none ;}
 #fakemouse > div {transition: 250ms ease; border: 2px solid transparent; width: 1rem; height: 1rem; border-radius: 50%;}
 #fakemouse > div > * {  height: 1rem; width: 1rem;  border-radius: 50%; position: absolute; transition: 250ms ease; }
 #fakemouse  .blue {background: #05DBF2; animation: shrink 3s ease-in infinite;  z-index: 3;}
 #fakemouse  .red {background: #F20587; animation: shrink2 3s ease-in infinite;  z-index: 2;}
 #fakemouse  .white {background: #FFF; animation: shrink3 3s ease-in infinite;  z-index: 1;}
 #fakemouse  .bluebg {background: #05DBF2; z-index: 0;}
+#fakemouse  .fullvideo {opacity: 0; transform: scale(0.5); text-align: center; text-transform: uppercase; font-weight: 600; width: 10rem; display: block; position: absolute; top: -1.3rem;  left: -4.3rem; transition: 1000ms ease; animation: colorWheel 3s ease infinite; font-size: 0.8rem; }
+#fakemouse  .fullvideo.show {opacity: 1; transform: scale(0.8);}
 
 #fakemouse.fakehover > div {transform:scale(1.2);  animation: colorWheelBorder 3s ease infinite;  }
 #fakemouse.fakehover > div > * {background: transparent; }
@@ -302,21 +310,24 @@ footer > ul li.banked {color: #F20587;}
 
 
 /* PROJECT PAGE */
-body.project:not(.home) header > nav > ul > li:nth-of-type(1) {right: 0; transform-origin: right; transform: rotate(90deg) translate(100%, 0)}
+body.project:not(.home) header > nav > ul > li:nth-of-type(1) {right: 0; transform-origin: top right; transform: rotate(90deg) translate(100%, -100%); min-width: 25rem; }
 .project div.loading .box {transition: 1000ms ease;}
 .project div.loading .rapbox h1::after { transition: 500ms ease;  }
 .project.loaded div.loading .box { margin-top: 30rem;  }
 .project.loaded div.loading .rapbox { transform: rotate(90deg) translateX(100%) }
 .project.loaded.scrolled div.loading .rapbox h1::after { color: #000; }
 
-section.content { position: relative; z-index: 2; max-width: 55rem; margin: 0 auto; display: flex; flex-direction: row-reverse; justify-content: space-between;}
+section.content { position: relative; z-index: 2; max-width: 55rem; margin: 0 auto; display: flex; flex-direction: row-reverse; justify-content: space-between; width: calc(100% - 2rem); }
 section.content article {max-width: 24rem; width: 100%; position: relative;}
-section.content article figure {width: 100%; height: 0; padding-bottom: 150%; position: relative;}
-section.content article figure img {position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;}
+section.content article figure {width: 100%; height: 0; padding-bottom: 177.77%; position: relative;}
+section.content article figure > a {position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
+section.content article figure iframe {pointer-events: none;}
+
 section.content h1 {color: #F20587; text-transform: lowercase;  font-size: 3rem; max-width: 70%; }
 section.content h1::after {content: ""; display: block; border-bottom: 1px solid #b0b0a1; width: 143%; margin-bottom: 0.5rem; }
+section.content article:last-of-type  {margin-right: 1rem;}
 section.content article:last-of-type > div:not(.md) {display: flex; flex-direction: row; margin-bottom: 1rem; }
-section.content article:last-of-type > div figure {width: 60%; padding-bottom: 60%;}
+section.content article:last-of-type > div figure {width: 60%; padding-bottom: 74%;}
 section.content article:last-of-type > div h3 {font-family: "Staatliches"; color: #aaa; font-size: 1.3rem; margin: 0 1.5rem; box-sizing: content-box; width: calc(40% - 3rem); transition: 500ms ease; } 
 section.content article:last-of-type > div:hover h3 {color: #05DBF2;}
 section.content article:last-of-type > div.md {color: #aaa; font-weight: 600; transition: 3s ease;}
@@ -340,8 +351,127 @@ section.related > div:not(.slider) h3 {margin: 0.2rem 0; font-size: 2rem;}
     header > nav > ul > li:nth-of-type(4) { bottom: calc(100% - 2.6rem); right: 3.5rem}
 }
 
+@media only screen and (max-width: 768px) {
+    section.project .narrow {flex-direction: column-reverse; justify-content: initial;}
+    section.project .narrow .articles {margin: 0 auto; max-width: 17rem;}
+    section.project .narrow .articles article {max-width: 17rem; width: 100%; }
+    section.project .narrow .articles article h2 {width: 80%; }
+    section.project .narrow .articles::after { max-width: 100%; }
+
+    section.intro {height: calc(100vh - 5rem)}
+    
+    section.content {flex-direction: column;}
+    section.content article { margin: 1rem auto 0; }
+    section.content h1 { font-size: 2rem; }
+    section.content article:last-of-type > div h3 {font-size: 1rem;}
+    section.content article:last-of-type > div.md {font-size: 0.8rem; font-weight: 500; }
+
+    img.mobile { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    
+    footer {margin-top: 8rem; }
+    footer > ul li:nth-of-type(2) ul {transform: translateY(-100%);}
+}
+
 @media only screen and (max-width: 500px) {
     section.grid ul.filters {width: 100%; }
     section.grid ul.filters li {margin: 0.5rem; }
     section.grid ul.filters li label {font-size: 0.8rem}
 }
+
+
+/* LIGHTBOX */
+#lightbox {width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: rgba(0,0,0,0.85); z-index: 9999999; line-height: 0; cursor: pointer; display: none;}
+#lightbox .img {
+    position: relative; 
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    max-width: 100%;
+    max-height: 100%;
+}
+#lightbox .img img {opacity: 0; pointer-events: none; width: auto;}
+@media screen and (min-width: 1200px) {
+    #lightbox .img {
+        max-width: 1200px;
+    }
+}
+@media screen and (min-height: 1200px) {
+    #lightbox .img {
+        max-height: 1200px;
+    }
+}
+#lightbox span {display: block; position: fixed; bottom: 13px; height: 1.5em; line-height: 1.4em; width: 100%; text-align: center; color: white; text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;  
+}
+
+#lightbox span {display: none;}
+
+#lightbox .videoWrapperContainer {
+    position: relative; 
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    max-width: 90%;
+    max-height: 100%;
+}
+#lightbox .videoWrapperContainer .videoWrapper {
+    height: 0;
+    line-height: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    padding-bottom: 56.333%; /* custom */
+    background: black;
+} 
+#lightbox .videoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}   
+#lightbox #prev, #lightbox #next {height: 50px; line-height: 36px; display: none; margin-top: -25px; position: fixed; top: 50%; padding: 0 15px; cursor: pointer; text-decoration: none; z-index: 99; color: white; font-size: 60px;}
+#lightbox.gallery #prev, #lightbox.gallery #next {display: block;}
+#lightbox #prev {left: 0;}
+#lightbox #next {right: 0;}
+#lightbox #close {height: 50px; width: 50px; position: fixed; cursor: pointer; text-decoration: none; z-index: 99; right: 0; top: 0;}
+#lightbox #close:after, #lightbox #close:before {position: absolute; margin-top: 22px; margin-left: 14px; content: ""; height: 3px; background: white; width: 23px;
+-webkit-transform-origin: 50% 50%;
+-moz-transform-origin: 50% 50%;
+-o-transform-origin: 50% 50%;
+transform-origin: 50% 50%;
+/* Safari */
+-webkit-transform: rotate(-45deg);
+/* Firefox */
+-moz-transform: rotate(-45deg);
+/* IE */
+-ms-transform: rotate(-45deg);
+/* Opera */
+-o-transform: rotate(-45deg);
+}
+#lightbox #close:after {
+/* Safari */
+-webkit-transform: rotate(45deg);
+/* Firefox */
+-moz-transform: rotate(45deg);
+/* IE */
+-ms-transform: rotate(45deg);
+/* Opera */
+-o-transform: rotate(45deg);
+}
+#lightbox, #lightbox * {
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
+}
+/* END LIGHTBOX */

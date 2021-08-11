@@ -1,6 +1,9 @@
 ---
 title: Mocro maffia s3
 vimeo_code: 577125186
+vimeo_code_9x16: 583306967
+vimeo_code_1x1_1: 583307998
+vimeo_code_1x1_2: 583307623
 image: /img/placeholder.jpg
 tags: 
     - camera

@@ -38,7 +38,7 @@
                     {% for item in site.projects %}
                         {% if item.slug == selection %}
                         <article>
-                            <h2>{{ item.title }}</h2>
+                            <h2><a class="fakehover" href="{{ item.url }}">{{ item.title }}</a></h2>
                             <span class="btn fakehover" data-collapsed=0 onclick="collapseArticle(this)"></span>
                             <div class="content">
                                 {{ item.homepage_text_markdown | markdownify }}
