@@ -317,7 +317,7 @@ body.project:not(.home) header > nav > ul > li:nth-of-type(1) {right: 0; transfo
 .project div.loading .box {transition: 1000ms ease;}
 .project div.loading .rapbox h1::after { transition: 500ms ease;  }
 .project.loaded div.loading .box { margin-top: 30rem;  }
-.project.loaded div.loading .rapbox { transform: rotate(90deg) translateX(100%) }
+.project.loaded div.loading .rapbox { transform: rotate(90deg) translateX(100%); top: -9.7rem}
 .project.loaded.scrolled div.loading .rapbox h1::after { color: #000; }
 
 section.content { position: relative; z-index: 2; max-width: 55rem; margin: 0 auto; display: flex; flex-direction: row-reverse; justify-content: space-between; width: calc(100% - 2rem); }
@@ -353,6 +353,10 @@ section.related > div:not(.slider) h3 {margin: 0.2rem 0; font-size: 2rem;}
 
 @media only screen and (max-width: 1500px) {
     header > nav > ul > li:nth-of-type(4) { bottom: calc(100% - 2.6rem); right: 3.5rem}
+}
+
+@media only screen and (max-width: 1300px) {
+    .loaded div.loading {position: absolute;}
 }
 
 @media only screen and (max-width: 768px) {
